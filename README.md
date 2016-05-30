@@ -12,7 +12,7 @@
 [coverage]: https://coveralls.io/github/piotrmurach/tty-editor
 [inchpages]: http://inch-ci.org/github/piotrmurach/tty-editor
 
-> Edit text in an automatically detected editor of choice.
+> Opens a file or text in in the user's preferred editor.
 
 ## Installation
 
