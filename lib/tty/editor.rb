@@ -1,5 +1,6 @@
 # encoding: utf-8
 
+require 'tty-prompt'
 require 'tty-platform'
 require 'tty-which'
 require 'shellwords'
@@ -11,9 +12,11 @@ module TTY
   #
   # @api private
   class Editor
-
     # Raised when command cannot be invoked
     class CommandInvocationError < RuntimeError; end
+
+    # Raised when not editor found
+    class EditorNotFoundError < RuntimeError; end
 
     @command = nil
 
@@ -27,33 +30,48 @@ module TTY
     #
     # @api private
     def self.executables
-      [ENV['VISUAL'], ENV['EDITOR'], 'vi', 'emacs']
+      [ENV['VISUAL'], ENV['EDITOR'],
+       'vim', 'vi', 'emacs', 'nano', 'nano-tiny', 'pico', 'mate -w']
     end
 
     # Find available command
     #
     # @param [Array[String]] commands
     #
-    # @return [String]
+    # @return [Array[String]]
     #
     # @api public
     def self.available(*commands)
       commands = commands.empty? ? executables : commands
-      commands.compact.uniq.find { |cmd| exists?(cmd) }
+      commands.compact.uniq.select { |cmd| exists?(cmd) }
     end
 
     # Finds command using a configured command(s) or detected shell commands.
     #
     # @param [Array[String]] commands
     #
+    # @raise [TTY::CommandInvocationError]
+    #
     # @return [String]
     #
     # @api public
     def self.command(*commands)
-      @command = if @command && commands.empty?
+      if @command && commands.empty?
         @command
       else
-        available(*commands)
+        execs = available(*commands)
+        if execs.empty?
+          fail EditorNotFoundError,
+               'Could not find editor to use. Please specify $VISUAL or $EDITOR'
+        else
+          exec = if execs.size > 1
+                   prompt = TTY::Prompt.new
+                   prompt.enum_select('Select an editor?', execs)
+                 else
+                   execs[0]
+                 end
+          @command = TTY::Which.which(exec)
+        end
       end
     end
 
@@ -62,17 +80,13 @@ module TTY
     # @param [String] file
     #   the name of the file
     #
-    # @raise [TTY::CommandInvocationError]
     #
     # @return [Object]
     #
     # @api public
     def self.open(*args)
-      unless command
-        fail CommandInvocationError, 'Please export $VISUAL or $EDITOR'
-      end
+      editor = new(*args)
 
-      editor = self.new(*args)
       yield(editor) if block_given?
 
       editor.invoke
@@ -95,7 +109,7 @@ module TTY
     #
     # @api private
     def build
-      "#{Editor.command} #{escape_file}"
+      "#{self.class.command} #{escape_file}"
     end
 
     # Escape file path
@@ -120,7 +134,8 @@ module TTY
       command_invocation = build
       status = system(*Shellwords.split(command_invocation))
       return status if status
-      fail CommandInvocationError, "`#{command_invocation}` failed with status: #{$? ? $?.exitstatus : nil}"
+      fail CommandInvocationError,
+           "`#{command_invocation}` failed with status: #{$? ? $?.exitstatus : nil}"
     end
-  end# Editor
+  end # Editor
 end # TTY

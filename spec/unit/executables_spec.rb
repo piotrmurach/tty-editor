@@ -6,6 +6,6 @@ RSpec.describe TTY::Editor, '#executables' do
   end
 
   it "includes vi in default executables" do
-    expect(TTY::Editor.executables).to include('vi')
+    expect(TTY::Editor.executables).to include('vim')
   end
 end
