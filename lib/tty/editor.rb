@@ -130,7 +130,7 @@ module TTY
     # @raise [TTY::CommandInvocationError]
     #
     # @api private
-    def invoke
+    def run
       status = system(*Shellwords.split(command_path))
       return status if status
       fail CommandInvocationError,
