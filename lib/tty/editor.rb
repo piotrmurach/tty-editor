@@ -103,15 +103,6 @@ module TTY
       @filename = args.shift
     end
 
-    # Build invocation command for editor
-    #
-    # @return [String]
-    #
-    # @api private
-    def build
-      "#{self.class.command} #{escape_file}"
-    end
-
     # Escape file path
     #
     # @api private
@@ -125,17 +116,25 @@ module TTY
       end
     end
 
+    # Build command path to invoke
+    #
+    # @return [String]
+    #
+    # @api private
+    def command_path
+      "#{self.class.command} #{escape_file}"
+    end
+
     # Inovke editor command in a shell
     #
     # @raise [TTY::CommandInvocationError]
     #
     # @api private
     def invoke
-      command_invocation = build
-      status = system(*Shellwords.split(command_invocation))
+      status = system(*Shellwords.split(command_path))
       return status if status
       fail CommandInvocationError,
-           "`#{command_invocation}` failed with status: #{$? ? $?.exitstatus : nil}"
+           "`#{command_path}` failed with status: #{$? ? $?.exitstatus : nil}"
     end
   end # Editor
 end # TTY
