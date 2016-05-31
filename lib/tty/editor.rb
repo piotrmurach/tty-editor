@@ -89,7 +89,7 @@ module TTY
 
       yield(editor) if block_given?
 
-      editor.invoke
+      editor.run
     end
 
     # Initialize an Editor

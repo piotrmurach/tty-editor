@@ -8,8 +8,8 @@ RSpec.describe TTY::Editor, '#open' do
     }.to raise_error(TTY::Editor::CommandInvocationError)
   end
 
-  it 'invokes editor' do
-    invocable = double(:invocable, invoke: nil)
+  it 'opens editor' do
+    invocable = double(:invocable, run: nil)
     allow(TTY::Editor).to receive(:command).and_return('vim')
     allow(TTY::Editor).to receive(:new).with('hello.rb').and_return(invocable)
 
