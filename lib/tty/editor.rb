@@ -12,10 +12,9 @@ module TTY
     # Raised when command cannot be invoked
     class CommandInvocationError < RuntimeError; end
 
-    # Raised when not editor found
+    # Raised when editor cannot be found
     class EditorNotFoundError < RuntimeError; end
 
-    @command = nil
 
     # Check if editor exists
     #
@@ -48,34 +47,6 @@ module TTY
       commands.uniq.select(&method(:exist?))
     end
 
-    # Finds command using a configured command(s) or detected shell commands.
-    #
-    # @param [Array[String]] commands
-    #
-    # @raise [TTY::CommandInvocationError]
-    #
-    # @return [String]
-    #
-    # @api public
-    def self.command(*commands)
-      if @command && commands.empty?
-        @command
-      else
-        execs = available(*commands)
-        if execs.empty?
-          fail EditorNotFoundError,
-               'Could not find editor to use. Please specify $VISUAL or $EDITOR'
-        else
-          exec = if execs.size > 1
-                   prompt = TTY::Prompt.new
-                   prompt.enum_select('Select an editor?', execs)
-                 else
-                   execs[0]
-                 end
-          @command = TTY::Which.which(exec)
-        end
-      end
-    end
 
     # Open file in system editor
     #
@@ -99,10 +70,39 @@ module TTY
     # @param [String] file
     #
     # @api public
-    def initialize(*args)
-      @env      = args.first.is_a?(Hash) ? args.shift : {}
-      @options  = args.last.is_a?(Hash) ? args.pop : {}
-      @filename = args.shift
+    def initialize(filename, **options)
+      @env      = options.fetch(:env) { { } }
+      @command  = options[:command]
+      @filename = filename
+    end
+
+    # Finds command using a configured command(s) or detected shell commands.
+    #
+    # @param [Array[String]] commands
+    #
+    # @raise [TTY::CommandInvocationError]
+    #
+    # @return [String]
+    #
+    # @api public
+    def command(*commands)
+      if @command && commands.empty?
+        @command
+      else
+        execs = self.class.available(*commands)
+        if execs.empty?
+          raise EditorNotFoundError,
+                'Could not find editor to use. Please specify $VISUAL or $EDITOR'
+        else
+          exec = if execs.size > 1
+                   prompt = TTY::Prompt.new
+                   prompt.enum_select('Select an editor?', execs)
+                 else
+                   execs[0]
+                 end
+          @command = TTY::Which.which(exec)
+        end
+      end
     end
 
     # Check if Windowz
@@ -131,7 +131,7 @@ module TTY
     #
     # @api private
     def command_path
-      "#{self.class.command} #{escape_file}"
+      "#{command} #{escape_file}"
     end
 
     # Inovke editor command in a shell

@@ -1,20 +1,19 @@
 # encoding: utf-8
 
 RSpec.describe TTY::Editor, '#open' do
-  it 'fails to open editor' do
-    allow(TTY::Editor).to receive(:command).and_return(nil)
-    expect {
-      TTY::Editor.open('hello.rb')
-    }.to raise_error(TTY::Editor::CommandInvocationError)
+  it 'opens editor with known command' do
+    invocable = double(:invocable, run: nil)
+    allow(TTY::Editor).to receive(:new).
+      with('hello.rb', command: :vim).and_return(invocable)
+
+    TTY::Editor.open('hello.rb', command: :vim)
+
+    expect(TTY::Editor).to have_received(:new).with('hello.rb', command: :vim)
   end
 
-  it 'opens editor' do
-    invocable = double(:invocable, run: nil)
-    allow(TTY::Editor).to receive(:command).and_return('vim')
-    allow(TTY::Editor).to receive(:new).with('hello.rb').and_return(invocable)
-
-    TTY::Editor.open('hello.rb')
-
-    expect(TTY::Editor).to have_received(:new).with('hello.rb')
+  it 'fails to open editor with unknown command' do
+    expect {
+      TTY::Editor.open('hello.rb', command: :unknown)
+    }.to raise_error(TTY::Editor::CommandInvocationError)
   end
 end
