@@ -32,20 +32,19 @@ Or install it yourself as:
 
 ## Usage
 
-Open editor with text content:
+Open file or text in default editor by calling `open`:
 
 ```ruby
-TTY::Editor.open  # opens editor with no input
+TTY::Editor.open               # opens editor with no input
 TTY::Editor.open('hello.rb')   # opens editor with the file contents
 TTY::Editor.open('some text')  # opens editor with text
 ```
 
-optionally provide editor of your choice:
+You can force to always use a specific editor by passing `:command` option:
 
 ```ruby
-TTY::Editor.command('vim')
 
-TTY::Editor.open('hello.rb', editor: 'vim')
+TTY::Editor.open('hello.rb', command: :vim)
 ```
 
 Use `:env` key to forward environment variables to  the editor.
@@ -54,11 +53,11 @@ Use `:env` key to forward environment variables to  the editor.
 TTY::Editor.open('hello.rb', env: { ... })
 ```
 
-## Open
+## Interface
 
-If editor cannot be opend `TTY::Editor::CommandInvocation` error is raised.
+### open
 
-If content is successfully saved it returns `true`
+When editor successfully opens file or content then `true` is returned as value, otherwise `TTY::Editor::CommandInvocation` error is raised.
 
 ## Development
 
@@ -68,7 +67,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/tty-editor. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/piotrmurach/tty-editor. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
@@ -76,4 +75,4 @@ The gem is available as open source under the terms of the [MIT License](http://
 
 ## Copyright
 
-Copyright (c) 2016 Piotr Murach. See LICENSE for further details.
+Copyright (c) 2017 Piotr Murach. See LICENSE for further details.
