@@ -1,6 +1,7 @@
 # TTY::Editor [![Gitter](https://badges.gitter.im/Join%20Chat.svg)][gitter]
 [![Gem Version](https://badge.fury.io/rb/tty-editor.svg)][gem]
 [![Build Status](https://secure.travis-ci.org/piotrmurach/tty-editor.svg?branch=master)][travis]
+[![Build status](https://ci.appveyor.com/api/projects/status/yw4guy16meq5wkee?svg=true)][appveyor]
 [![Code Climate](https://codeclimate.com/github/piotrmurach/tty-editor/badges/gpa.svg)][codeclimate]
 [![Coverage Status](https://coveralls.io/repos/github/piotrmurach/tty-editor/badge.svg)][coverage]
 [![Inline docs](http://inch-ci.org/github/piotrmurach/tty-editor.svg?branch=master)][inchpages]
@@ -8,11 +9,14 @@
 [gitter]: https://gitter.im/piotrmurach/tty
 [gem]: http://badge.fury.io/rb/tty-editor
 [travis]: http://travis-ci.org/piotrmurach/tty-editor
+[appveyor]: https://ci.appveyor.com/project/piotrmurach/tty-editor
 [codeclimate]: https://codeclimate.com/github/piotrmurach/tty-editor
 [coverage]: https://coveralls.io/github/piotrmurach/tty-editor
 [inchpages]: http://inch-ci.org/github/piotrmurach/tty-editor
 
 > Opens a file or text in in the user's preferred editor.
+
+**TTY::Editor** provides independent component for [TTY](https://github.com/piotrmurach/tty) toolkit.
 
 ## Installation
 
