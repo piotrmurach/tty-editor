@@ -2,10 +2,7 @@
 
 require 'tty-prompt'
 require 'tty-platform'
-require 'tty-which'
 require 'shellwords'
-
-require 'tty/editor/version'
 
 module TTY
   # A class responsible for launching an editor
@@ -20,8 +17,13 @@ module TTY
 
     @command = nil
 
-    def self.exists?(path)
-      !TTY::Which.which(path).nil?
+    # Check if editor exists
+    #
+    # @return [Boolean]
+    #
+    # @api private
+    def self.exists?(cmd)
+      !!system(cmd, out: File::NULL, err: File::NULL)
     end
 
     # List possible executable for editor command
