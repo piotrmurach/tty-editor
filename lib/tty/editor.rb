@@ -69,10 +69,20 @@ module TTY
     # @param [String] file
     #
     # @api public
-    def initialize(filename, **options)
+    def initialize(filename = nil, **options)
       @env      = options.fetch(:env) { {} }
       @command  = options[:command]
-      @filename = FileTest.file?(filename) ? filename : tempfile_path(filename)
+      @filename = filename ? file_or_temp_path(filename) : nil
+    end
+
+    # Decide if temp file path needs generating
+    #
+    # @return [String]
+    #   the file path
+    #
+    # @api private
+    def file_or_temp_path(filename)
+      FileTest.file?(filename) ? filename : tempfile_path(filename)
     end
 
     # Finds command using a configured command(s) or detected shell commands.
