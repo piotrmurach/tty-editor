@@ -34,7 +34,7 @@ module TTY
     # @api private
     def self.executables
       [ENV['VISUAL'], ENV['EDITOR'],
-       'vim', 'vi', 'emacs', 'nano', 'nano-tiny', 'pico', 'mate -w']
+       'vim', 'vi', 'emacs', 'nano', 'nano-tiny', 'pico', 'mate -w'].compact
     end
 
     # Find available command
@@ -46,7 +46,7 @@ module TTY
     # @api public
     def self.available(*commands)
       commands = commands.empty? ? executables : commands
-      commands.compact.uniq.select(&method(:exist?))
+      commands.uniq.select(&method(:exist?))
     end
 
     # Finds command using a configured command(s) or detected shell commands.
