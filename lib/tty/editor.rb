@@ -2,7 +2,6 @@
 
 require 'tty-prompt'
 require 'tty-which'
-require 'tty-platform'
 require 'shellwords'
 
 module TTY
@@ -106,16 +105,23 @@ module TTY
       @filename = args.shift
     end
 
+    # Check if Windowz
+    #
+    # @return [Boolean]
+    #
+    # @api public
+    def windows?
+      File::ALT_SEPARATOR == "\\"
+    end
+
     # Escape file path
     #
     # @api private
     def escape_file
-      if TTY::Platform.unix?
-        Shellwords.shellescape(@filename)
-      elsif TTY::Platform.windows?
+      if windows?
         @filename.gsub(/\//, '\\')
       else
-        @filename
+        Shellwords.shellescape(@filename)
       end
     end
 
