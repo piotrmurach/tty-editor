@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 require 'tty-prompt'
+require 'tty-which'
 require 'tty-platform'
 require 'shellwords'
 
@@ -22,8 +23,8 @@ module TTY
     # @return [Boolean]
     #
     # @api private
-    def self.exists?(cmd)
-      !!system(cmd, out: File::NULL, err: File::NULL)
+    def self.exist?(cmd)
+      TTY::Which.exist?(cmd)
     end
 
     # List possible executable for editor command
@@ -45,7 +46,7 @@ module TTY
     # @api public
     def self.available(*commands)
       commands = commands.empty? ? executables : commands
-      commands.compact.uniq.select { |cmd| exists?(cmd) }
+      commands.compact.uniq.select(&method(:exist?))
     end
 
     # Finds command using a configured command(s) or detected shell commands.
