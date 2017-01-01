@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 RSpec.describe TTY::Editor, '#open' do
-  it 'opens editor with known command' do
+  it 'opens file in editor with known command' do
     invocable = double(:invocable, run: nil)
     allow(TTY::Editor).to receive(:new).
       with('hello.rb', command: :vim).and_return(invocable)
@@ -13,7 +13,7 @@ RSpec.describe TTY::Editor, '#open' do
 
   it 'fails to open editor with unknown command' do
     expect {
-      TTY::Editor.open('hello.rb', command: :unknown)
+      TTY::Editor.open(fixtures_path('hello.txt'), command: :unknown)
     }.to raise_error(TTY::Editor::CommandInvocationError)
   end
 end

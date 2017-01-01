@@ -2,6 +2,7 @@
 
 require 'tty-prompt'
 require 'tty-which'
+require 'tempfile'
 require 'shellwords'
 
 module TTY
@@ -14,7 +15,6 @@ module TTY
 
     # Raised when editor cannot be found
     class EditorNotFoundError < RuntimeError; end
-
 
     # Check if editor exists
     #
@@ -47,7 +47,6 @@ module TTY
       commands.uniq.select(&method(:exist?))
     end
 
-
     # Open file in system editor
     #
     # @param [String] file
@@ -71,9 +70,9 @@ module TTY
     #
     # @api public
     def initialize(filename, **options)
-      @env      = options.fetch(:env) { { } }
+      @env      = options.fetch(:env) { {} }
       @command  = options[:command]
-      @filename = filename
+      @filename = FileTest.file?(filename) ? filename : tempfile_path(filename)
     end
 
     # Finds command using a configured command(s) or detected shell commands.
@@ -132,6 +131,22 @@ module TTY
     # @api private
     def command_path
       "#{command} #{escape_file}"
+    end
+
+    # Create tempfile with content
+    #
+    # @param [String] content
+    #
+    # @return [String]
+    # @api private
+    def tempfile_path(content)
+      tempfile = Tempfile.new('tty-editor')
+      tempfile << content
+      tempfile.flush
+      unless tempfile.nil?
+        tempfile.close
+      end
+      tempfile.path
     end
 
     # Inovke editor command in a shell

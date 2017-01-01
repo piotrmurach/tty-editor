@@ -2,6 +2,7 @@
 
 RSpec.describe TTY::Editor, '#command' do
   it 'escapes editor filename on Unix' do
+    allow(FileTest).to receive(:file?).and_return(true)
     editor = TTY::Editor.new("/usr/bin/hello world.rb", command: :vim)
     allow(editor).to receive(:windows?).and_return(false)
 
@@ -9,6 +10,7 @@ RSpec.describe TTY::Editor, '#command' do
   end
 
   it "escapes path separators on Windows" do
+    allow(FileTest).to receive(:file?).and_return(true)
     editor = TTY::Editor.new('C:\User\hello world.rb', command: :vim)
     allow(editor).to receive(:windows?).and_return(true)
 

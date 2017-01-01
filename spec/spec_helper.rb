@@ -13,10 +13,16 @@ if RUBY_VERSION > '1.9' and (ENV['COVERAGE'] || ENV['TRAVIS'])
   end
 end
 
-$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
-require 'tty-editor'
+require 'tty/editor'
+
+module Helpers
+  def fixtures_path(filename = nil)
+    File.join(File.dirname(__FILE__), 'fixtures', filename.to_s)
+  end
+end
 
 RSpec.configure do |config|
+  config.include(Helpers)
   config.expect_with :rspec do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
   end
