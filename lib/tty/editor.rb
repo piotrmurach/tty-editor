@@ -38,6 +38,7 @@ module TTY
     # Find available command
     #
     # @param [Array[String]] commands
+    #   the commands to use intstead of defaults
     #
     # @return [Array[String]]
     #
@@ -49,9 +50,11 @@ module TTY
 
     # Open file in system editor
     #
+    # @example
+    #   TTY::Editor.open('filename.rb')
+    #
     # @param [String] file
     #   the name of the file
-    #
     #
     # @return [Object]
     #
