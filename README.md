@@ -14,7 +14,7 @@
 [coverage]: https://coveralls.io/github/piotrmurach/tty-editor
 [inchpages]: http://inch-ci.org/github/piotrmurach/tty-editor
 
-> Opens a file or text in in the user's preferred editor.
+> Opens a file or text in the user's preferred editor.
 
 **TTY::Editor** provides independent component for [TTY](https://github.com/piotrmurach/tty) toolkit.
 
