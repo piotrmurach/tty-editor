@@ -7,7 +7,7 @@ RSpec.describe TTY::Editor, '#tempfile_path' do
       'random_path'
     end
 
-    allow(FileTest).to receive(:file?).and_return(false)
+    allow(::FileTest).to receive(:file?).and_return(false)
     allow(Tempfile).to receive(:new).and_return(tempfile)
 
     editor = TTY::Editor.new("Multiline\ncontent", command: :vim)

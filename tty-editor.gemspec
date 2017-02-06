@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Piotr Murach"]
   spec.email         = [""]
 
-  spec.summary       = %q{Opens a file or text in in the user's preferred editor.}
-  spec.description   = %q{Opens a file or text in in the user's preferred editor.}
+  spec.summary       = %q{Opens a file or text in the user's preferred editor.}
+  spec.description   = %q{Opens a file or text in the user's preferred editor.}
   spec.homepage      = "https://piotrmurach.github.io/tty"
   spec.license       = "MIT"
 

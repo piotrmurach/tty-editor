@@ -85,7 +85,7 @@ module TTY
     #
     # @api private
     def file_or_temp_path(filename)
-      FileTest.file?(filename) ? filename : tempfile_path(filename)
+      ::FileTest.file?(filename) ? filename : tempfile_path(filename)
     end
 
     # Finds command using a configured command(s) or detected shell commands.
@@ -123,7 +123,7 @@ module TTY
     #
     # @api public
     def windows?
-      File::ALT_SEPARATOR == "\\"
+      ::File::ALT_SEPARATOR == "\\"
     end
 
     # Escape file path

@@ -17,7 +17,7 @@ require 'tty/editor'
 
 module Helpers
   def fixtures_path(filename = nil)
-    File.join(File.dirname(__FILE__), 'fixtures', filename.to_s)
+    ::File.join(::File.dirname(__FILE__), 'fixtures', filename.to_s)
   end
 end
 
