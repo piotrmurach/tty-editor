@@ -36,14 +36,22 @@ module TTY
       ::File::ALT_SEPARATOR == "\\"
     end
 
+    # Check editor from environment variables
+    #
+    # @return [Array[String]]
+    #
+    # @api public
+    def self.from_env
+      [ENV['VISUAL'], ENV['EDITOR']].compact
+    end
+
     # List possible executable for editor command
     #
     # @return [Array[String]]
     #
-    # @api private
+    # @api public
     def self.executables
-      [ENV['VISUAL'], ENV['EDITOR'],
-       'vim', 'vi', 'emacs', 'nano', 'nano-tiny', 'pico', 'mate -w'].compact
+      ['vim', 'vi', 'emacs', 'nano', 'nano-tiny', 'pico', 'mate -w']
     end
 
     # Find available command
@@ -55,8 +63,15 @@ module TTY
     #
     # @api public
     def self.available(*commands)
-      commands = commands.empty? ? executables : commands
-      commands.uniq.select(&method(:exist?))
+      return commands unless commands.empty?
+
+      if !from_env.all?(&:empty?)
+        [from_env.find { |e| !e.empty? }]
+      elsif windows?
+        ['notepad']
+      else
+        executables.uniq.select(&method(:exist?))
+      end
     end
 
     # Open file in system editor
@@ -127,7 +142,6 @@ module TTY
         end
       end
     end
-
 
     # Escape file path
     #

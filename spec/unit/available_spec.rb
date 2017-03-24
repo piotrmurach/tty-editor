@@ -4,9 +4,22 @@ RSpec.describe TTY::Editor, '#available' do
   before do
     allow(ENV).to receive(:[]).with('VISUAL').and_return(nil)
     allow(ENV).to receive(:[]).with('EDITOR').and_return(nil)
+    allow(TTY::Editor).to receive(:windows?).and_return(false)
   end
 
-  it 'finds a single editor' do
+  it "detects editor from env" do
+    allow(ENV).to receive(:[]).with('VISUAL').and_return('vi')
+
+    expect(TTY::Editor.available).to eq(['vi'])
+  end
+
+  it "offers notepad editor on windows platform" do
+    allow(TTY::Editor).to receive(:windows?).and_return(true)
+
+    expect(TTY::Editor.available).to eq(['notepad'])
+  end
+
+  it 'finds a single editor on unix' do
     editor = TTY::Editor
     allow(editor).to receive(:exist?).and_return(false)
     allow(editor).to receive(:exist?).with('vim').and_return(true)
@@ -23,7 +36,7 @@ RSpec.describe TTY::Editor, '#available' do
     expect(editor.available).to eql(['vim', 'emacs'])
   end
 
-  it "doesn't find command" do
+  it "doesn't find any editor on unix" do
     editor = TTY::Editor
     allow(editor).to receive(:exist?).and_return(false)
 
@@ -33,7 +46,6 @@ RSpec.describe TTY::Editor, '#available' do
   it "uses custom editor" do
     editor = TTY::Editor
     name = 'sublime'
-    allow(editor).to receive(:exist?).with(name).and_return(true)
 
     expect(editor.available(name)).to eql([name])
   end
