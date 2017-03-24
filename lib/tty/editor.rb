@@ -93,12 +93,22 @@ module TTY
       editor.run
     end
 
+    attr_accessor :command
+
+    attr_accessor :env
+
     # Initialize an Editor
     #
     # @param [String] file
+    # @param [Hash[Symbol]] options
+    # @option options [Hash] :command
+    #   the editor command to use, by default auto detects
+    # @option options [Hash] :env
+    #   environment variables to forward to the editor
     #
     # @api public
-    def initialize(filename = nil, **options)
+    def initialize(*args, **options)
+      filename = args.unshift.first
       @env      = options.fetch(:env) { {} }
       @command  = options[:command]
       @filename = filename ? file_or_temp_path(filename) : nil
@@ -185,7 +195,7 @@ module TTY
     #
     # @api private
     def run
-      status = system(*Shellwords.split(command_path))
+      status = system(env, *Shellwords.split(command_path))
       return status if status
       fail CommandInvocationError,
            "`#{command_path}` failed with status: #{$? ? $?.exitstatus : nil}"
