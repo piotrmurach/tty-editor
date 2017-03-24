@@ -8,7 +8,7 @@ RSpec.describe TTY::Editor, '#run' do
 
     editor.run
 
-    expect(editor).to have_received(:system).with('vim', 'hello.txt')
+    expect(editor).to have_received(:system).with({}, 'vim', 'hello.txt')
   end
 
   it 'fails to run editor command' do
