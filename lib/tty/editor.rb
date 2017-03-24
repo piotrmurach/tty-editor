@@ -27,6 +27,15 @@ module TTY
       TTY::Which.exist?(cmd)
     end
 
+    # Check if Windowz
+    #
+    # @return [Boolean]
+    #
+    # @api public
+    def self.windows?
+      ::File::ALT_SEPARATOR == "\\"
+    end
+
     # List possible executable for editor command
     #
     # @return [Array[String]]
@@ -119,20 +128,12 @@ module TTY
       end
     end
 
-    # Check if Windowz
-    #
-    # @return [Boolean]
-    #
-    # @api public
-    def windows?
-      ::File::ALT_SEPARATOR == "\\"
-    end
 
     # Escape file path
     #
     # @api private
     def escape_file
-      if windows?
+      if self.class.windows?
         @filename.gsub(/\//, '\\')
       else
         Shellwords.shellescape(@filename)
