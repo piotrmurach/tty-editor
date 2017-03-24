@@ -5,6 +5,8 @@ require 'tty-which'
 require 'tempfile'
 require 'shellwords'
 
+require_relative 'editor/version'
+
 module TTY
   # A class responsible for launching an editor
   #
