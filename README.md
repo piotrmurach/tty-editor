@@ -36,32 +36,49 @@ Or install it yourself as:
 
 ## Usage
 
-Open file or text in default editor by calling `open`:
+To edit a file in default editor:
 
 ```ruby
-TTY::Editor.open               # opens editor with no input
-TTY::Editor.open('hello.rb')   # opens editor with the file contents
-TTY::Editor.open('some text')  # opens editor with text
+TTY::Editor.open('hello.rb')
 ```
 
-You can force to always use a specific editor by passing `:command` option:
+To edit content in a default editor:
 
 ```ruby
-
-TTY::Editor.open('hello.rb', command: :vim)
+TTY::Editor.open(content: "some text")
 ```
 
-Use `:env` key to forward environment variables to  the editor.
-
-```ruby
-TTY::Editor.open('hello.rb', env: { ... })
-```
+The `VISUAL` or `EDITOR` shell environment variables take precedencee when auto detecting available editrs.
 
 ## Interface
 
 ### open
 
-When editor successfully opens file or content then `true` is returned as value, otherwise `TTY::Editor::CommandInvocation` error is raised.
+If you wish to open editor with no file or content do:
+
+```ruby
+TTY::Editor.open
+```
+
+When editor successfully opens file or content then `true` is returned.
+
+If the editor cannot be open a `TTY::Editor::CommandInvocation` error is raised.
+
+### :env
+
+Use `:env` key to forward environment variables to  the editor.
+
+```ruby
+TTY::Editor.open('hello.rb', env: {"FOO" => "bar"})
+```
+
+### :command
+
+You can force to always use a specific editor by passing `:command` option:
+
+```ruby
+TTY::Editor.open('hello.rb', command: :vim)
+```
 
 ## Development
 
