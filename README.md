@@ -48,7 +48,13 @@ To edit content in a default editor:
 TTY::Editor.open(content: "some text")
 ```
 
-The `VISUAL` or `EDITOR` shell environment variables take precedencee when auto detecting available editrs.
+You can also set your preferred editor command:
+
+```ruby
+TTY::Editor.open('hello.rb', command: :vim)
+```
+
+Also, the `VISUAL` or `EDITOR` shell environment variables take precedencee when auto detecting available editors.
 
 ## Interface
 
@@ -62,7 +68,7 @@ TTY::Editor.open
 
 When editor successfully opens file or content then `true` is returned.
 
-If the editor cannot be open a `TTY::Editor::CommandInvocation` error is raised.
+If the editor cannot be opened, a `TTY::Editor::CommandInvocation` error is raised.
 
 ### :env
 
