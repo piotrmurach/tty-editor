@@ -3,6 +3,7 @@
 require 'tty-prompt'
 require 'tty-which'
 require 'tempfile'
+require 'fileutils'
 require 'shellwords'
 
 require_relative 'editor/version'
@@ -90,7 +91,7 @@ module TTY
 
       yield(editor) if block_given?
 
-      editor.run
+      editor.open
     end
 
     # Initialize an Editor
@@ -104,10 +105,21 @@ module TTY
     #
     # @api public
     def initialize(*args, **options)
-      filename = args.unshift.first
+      @filename = args.unshift.first
       @env      = options.fetch(:env) { {} }
       @command  = options[:command]
-      @filename = filename ? file_or_temp_path(filename) : nil
+      if @filename
+        if ::File.exist?(@filename) && !::FileTest.file?(@filename)
+          raise ArgumentError, "Don't know how to handle `#{@filename}`. " \
+                               "Please provida a file path or content"
+        elsif ::File.exist?(@filename) && !options[:content].to_s.empty?
+          ::File.open(@filename, 'a') { |f| f.write(options[:content]) }
+        elsif !::File.exist?(@filename)
+          ::File.write(@filename, options[:content])
+        end
+      else
+        @filename = tempfile_path(options[:content])
+      end
     end
 
     # Read or update environment vars
@@ -116,16 +128,6 @@ module TTY
     def env(value = (not_set = true))
       return @env if not_set
       @env = value
-    end
-
-    # Decide if temp file path needs generating
-    #
-    # @return [String]
-    #   the file path
-    #
-    # @api private
-    def file_or_temp_path(filename)
-      ::FileTest.file?(filename) ? filename : tempfile_path(filename)
     end
 
     # Finds command using a configured command(s) or detected shell commands.
@@ -201,7 +203,7 @@ module TTY
     # @raise [TTY::CommandInvocationError]
     #
     # @api private
-    def run
+    def open
       status = system(env, *Shellwords.split(command_path))
       return status if status
       fail CommandInvocationError,
