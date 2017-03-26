@@ -93,8 +93,6 @@ module TTY
       editor.run
     end
 
-    attr_accessor :env
-
     # Initialize an Editor
     #
     # @param [String] file
@@ -110,6 +108,14 @@ module TTY
       @env      = options.fetch(:env) { {} }
       @command  = options[:command]
       @filename = filename ? file_or_temp_path(filename) : nil
+    end
+
+    # Read or update environment vars
+    #
+    # @api public
+    def env(value = (not_set = true))
+      return @env if not_set
+      @env = value
     end
 
     # Decide if temp file path needs generating
@@ -140,14 +146,18 @@ module TTY
         raise EditorNotFoundError,
               'Could not find editor to use. Please specify $VISUAL or $EDITOR'
       end
+      exec = choose_exec_from(execs)
+      @command = TTY::Which.which(exec.to_s)
+    end
 
-      exec = if execs.size > 1
-                prompt = TTY::Prompt.new
-                prompt.enum_select('Select an editor?', execs)
-              else
-                execs[0]
-              end
-      @command = TTY::Which.which(exec)
+    # @api private
+    def choose_exec_from(execs)
+      if execs.size > 1
+        prompt = TTY::Prompt.new
+        prompt.enum_select('Select an editor?', execs)
+      else
+        execs[0]
+      end
     end
 
     # Escape file path
