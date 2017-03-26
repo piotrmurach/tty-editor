@@ -12,6 +12,9 @@
 * Change loading paths
 * Change dependencies
 
+### Fixed
+* Fix windows shell escaping
+
 ## [v0.1.2] - 2017-02-06
 
 ### Fixed
