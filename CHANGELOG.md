@@ -4,11 +4,12 @@
 
 ### Added
 * Add support for Windows by using notepad editor
+* Add :content option to Editor#open to distinguish between opening
+  a file with/without content
 
 ### Changed
-* Change Editor#open to accept content: option to distinguish between
-  opening file with/without content
 * Change to prioritise $VISUAL & $EDITOR env variables
+* Change to stop generating tempfiles when open without filename or content
 * Change loading paths
 * Change dependencies
 
