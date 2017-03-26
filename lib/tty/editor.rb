@@ -117,7 +117,7 @@ module TTY
         elsif !::File.exist?(@filename)
           ::File.write(@filename, options[:content])
         end
-      else
+      elsif options[:content]
         @filename = tempfile_path(options[:content])
       end
     end

@@ -11,6 +11,7 @@ RSpec.describe TTY::Editor, '#open' do
     ::FileUtils.rm_rf(tmp_path)
   end
 
+
   it "opens existing file" do
     file = fixtures_path('hello.txt')
     editor = TTY::Editor.new(file, command: :vim)
@@ -60,7 +61,6 @@ RSpec.describe TTY::Editor, '#open' do
     def tmp_file.path
       'tty-editor-path'
     end
-
     allow(Tempfile).to receive(:new).and_return(tmp_file)
     allow(tmp_file).to receive(:<<)
     editor = TTY::Editor.new(content: 'Hello Ruby!', command: :vim)
@@ -70,6 +70,13 @@ RSpec.describe TTY::Editor, '#open' do
 
     expect(editor).to have_received(:system).with({}, 'vim', 'tty-editor-path')
     expect(tmp_file).to have_received(:<<).with('Hello Ruby!')
+  end
+
+  it "opens editor without filename or content" do
+    editor = TTY::Editor.new(command: :vim)
+    allow(editor).to receive(:system).and_return(true)
+    expect(editor.open).to eq(true)
+    expect(editor).to have_received(:system).with({}, 'vim', '')
   end
 
   it "fails to open non-file without content" do
