@@ -20,6 +20,6 @@ RSpec.describe TTY::Editor, '#command' do
 
     editor = TTY::Editor.new(filename, command: :vim)
 
-    expect(editor.command_path).to eql("vim C:\\User\\hello world.rb")
+    expect(editor.command_path).to eql("vim C:\\\\User\\\\hello\\ world.rb")
   end
 end

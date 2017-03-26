@@ -166,11 +166,7 @@ module TTY
     #
     # @api private
     def escape_file
-      if self.class.windows?
-        @filename.gsub(/\//, '\\')
-      else
-        Shellwords.shellescape(@filename)
-      end
+      Shellwords.shellescape(@filename)
     end
 
     # Build command path to invoke
