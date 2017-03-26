@@ -10,7 +10,7 @@ require_relative 'editor/version'
 module TTY
   # A class responsible for launching an editor
   #
-  # @api private
+  # @api public
   class Editor
     # Raised when command cannot be invoked
     class CommandInvocationError < RuntimeError; end
@@ -93,8 +93,6 @@ module TTY
       editor.run
     end
 
-    attr_accessor :command
-
     attr_accessor :env
 
     # Initialize an Editor
@@ -127,6 +125,7 @@ module TTY
     # Finds command using a configured command(s) or detected shell commands.
     #
     # @param [Array[String]] commands
+    #   the optional command to use, by default auto detecting
     #
     # @raise [TTY::CommandInvocationError]
     #
@@ -134,23 +133,21 @@ module TTY
     #
     # @api public
     def command(*commands)
-      if @command && commands.empty?
-        @command
-      else
-        execs = self.class.available(*commands)
-        if execs.empty?
-          raise EditorNotFoundError,
-                'Could not find editor to use. Please specify $VISUAL or $EDITOR'
-        else
-          exec = if execs.size > 1
-                   prompt = TTY::Prompt.new
-                   prompt.enum_select('Select an editor?', execs)
-                 else
-                   execs[0]
-                 end
-          @command = TTY::Which.which(exec)
-        end
+      return @command if @command && commands.empty?
+
+      execs = self.class.available(*commands)
+      if execs.empty?
+        raise EditorNotFoundError,
+              'Could not find editor to use. Please specify $VISUAL or $EDITOR'
       end
+
+      exec = if execs.size > 1
+                prompt = TTY::Prompt.new
+                prompt.enum_select('Select an editor?', execs)
+              else
+                execs[0]
+              end
+      @command = TTY::Which.which(exec)
     end
 
     # Escape file path
