@@ -1,4 +1,5 @@
 # TTY::Editor [![Gitter](https://badges.gitter.im/Join%20Chat.svg)][gitter]
+
 [![Gem Version](https://badge.fury.io/rb/tty-editor.svg)][gem]
 [![Build Status](https://secure.travis-ci.org/piotrmurach/tty-editor.svg?branch=master)][travis]
 [![Build status](https://ci.appveyor.com/api/projects/status/yw4guy16meq5wkee?svg=true)][appveyor]
@@ -69,6 +70,20 @@ TTY::Editor.open
 When editor successfully opens file or content then `true` is returned.
 
 If the editor cannot be opened, a `TTY::Editor::CommandInvocation` error is raised.
+
+In order to open text content inside an editor do:
+
+```ruby
+TTY::Editor.open(content: 'text')
+```
+
+You can also provide filename that will be created with specified content before editor is opened:
+
+```ruby
+TTY::Editor.open('new.rb', content: 'text')
+```
+
+If you open a filename with already existing content then new content gets appended at the end of the file.
 
 ### :env
 
