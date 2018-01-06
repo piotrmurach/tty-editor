@@ -3,7 +3,7 @@
 [![Gem Version](https://badge.fury.io/rb/tty-editor.svg)][gem]
 [![Build Status](https://secure.travis-ci.org/piotrmurach/tty-editor.svg?branch=master)][travis]
 [![Build status](https://ci.appveyor.com/api/projects/status/yw4guy16meq5wkee?svg=true)][appveyor]
-[![Code Climate](https://codeclimate.com/github/piotrmurach/tty-editor/badges/gpa.svg)][codeclimate]
+[![Maintainability](https://api.codeclimate.com/v1/badges/0afb9e75eef4ae4615c6/maintainability)][codeclimate]
 [![Coverage Status](https://coveralls.io/repos/github/piotrmurach/tty-editor/badge.svg)][coverage]
 [![Inline docs](http://inch-ci.org/github/piotrmurach/tty-editor.svg?branch=master)][inchpages]
 
@@ -11,7 +11,7 @@
 [gem]: http://badge.fury.io/rb/tty-editor
 [travis]: http://travis-ci.org/piotrmurach/tty-editor
 [appveyor]: https://ci.appveyor.com/project/piotrmurach/tty-editor
-[codeclimate]: https://codeclimate.com/github/piotrmurach/tty-editor
+[codeclimate]:https://codeclimate.com/github/piotrmurach/tty-editor/maintainability
 [coverage]: https://coveralls.io/github/piotrmurach/tty-editor
 [inchpages]: http://inch-ci.org/github/piotrmurach/tty-editor
 
@@ -117,4 +117,4 @@ The gem is available as open source under the terms of the [MIT License](http://
 
 ## Copyright
 
-Copyright (c) 2017 Piotr Murach. See LICENSE for further details.
+Copyright (c) 2017-2018 Piotr Murach. See LICENSE for further details.
