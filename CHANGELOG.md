@@ -1,5 +1,11 @@
 # Change log
 
+## [v0.3.0] - 2018-01-06
+
+### Changed
+* Update tty-prompt dependency
+* Change gemspec to require ruby >= 2.0.0
+
 ## [v0.2.1] - 2017-09-18
 
 ### Changed
@@ -35,6 +41,7 @@
 
 * Initial implementation and release
 
+[v0.3.0]: https://github.com/piotrmurach/tty-editor/compare/v0.2.1...v0.3.0
 [v0.2.1]: https://github.com/piotrmurach/tty-editor/compare/v0.2.0...v0.2.1
 [v0.2.0]: https://github.com/piotrmurach/tty-editor/compare/v0.1.2...v0.2.0
 [v0.1.2]: https://github.com/piotrmurach/tty-editor/compare/v0.1.1...v0.1.2
