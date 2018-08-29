@@ -9,6 +9,7 @@
 
 ### Changed
 * Update tty-prompt dependency
+* Change to freeze all strings
 
 ## [v0.3.0] - 2018-01-06
 
