@@ -13,9 +13,9 @@ Gem::Specification.new do |spec|
   spec.homepage      = "https://piotrmurach.github.io/tty"
   spec.license       = "MIT"
 
-  spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
-  spec.bindir        = "exe"
-  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
+  spec.files         = Dir['{lib,spec,examples}/**/*.rb']
+  spec.files        += Dir['{bin,tasks}/*', 'tty-editor.gemspec']
+  spec.files        += Dir['README.md', 'CHANGELOG.md', 'LICENSE.txt', 'Rakefile']
   spec.require_paths = ["lib"]
 
   spec.required_ruby_version = '>= 2.0.0'
