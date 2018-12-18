@@ -1,5 +1,10 @@
 # Change log
 
+## [v0.5.0] - 2018-12-18
+
+### Changed
+* Change to update and relax tty-prompt & tty-which constraints
+
 ## [v0.4.1] - 2018-08-29
 
 ### Changed
@@ -52,6 +57,7 @@
 
 * Initial implementation and release
 
+[v0.5.0]: https://github.com/piotrmurach/tty-editor/compare/v0.4.1...v0.5.0
 [v0.4.1]: https://github.com/piotrmurach/tty-editor/compare/v0.4.0...v0.4.1
 [v0.4.0]: https://github.com/piotrmurach/tty-editor/compare/v0.3.0...v0.4.0
 [v0.3.0]: https://github.com/piotrmurach/tty-editor/compare/v0.2.1...v0.3.0
