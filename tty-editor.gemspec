@@ -20,8 +20,8 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = '>= 2.0.0'
 
-  spec.add_dependency 'tty-prompt',   '~> 0.17.0'
-  spec.add_dependency 'tty-which',    '~> 0.3.0'
+  spec.add_dependency 'tty-prompt',   '~> 0.18'
+  spec.add_dependency 'tty-which',    '~> 0.4'
 
   spec.add_development_dependency 'bundler', '>= 1.5.0', '< 2.0'
   spec.add_development_dependency 'rake',  '~> 10.0'
