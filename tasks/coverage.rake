@@ -1,4 +1,4 @@
-# encoding: utf-8
+# froze_string_literal: true
 
 desc 'Measure code coverage'
 task :coverage do
