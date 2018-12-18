@@ -59,7 +59,7 @@ You can also set your preferred editor command:
 TTY::Editor.open('hello.rb', command: :vim)
 ```
 
-Also, the `VISUAL` or `EDITOR` shell environment variables take precedencee when auto detecting available editors.
+Also, the `VISUAL` or `EDITOR` shell environment variables take precedence when auto detecting available editors.
 
 ## Interface
 
@@ -69,6 +69,12 @@ If you wish to open editor with no file or content do:
 
 ```ruby
 TTY::Editor.open
+```
+
+To open a file at a path pass it as a first argument:
+
+```ruby
+TTY::Editor.open('../README.md')
 ```
 
 When editor successfully opens file or content then `true` is returned.
@@ -105,6 +111,14 @@ You can force to always use a specific editor by passing `:command` option:
 TTY::Editor.open('hello.rb', command: :vim)
 ```
 
+To specify more than one command, and hence give a user a choice do:
+
+```ruby
+TTY::Editor.open('hello.rb') do |editor|
+  editor.command :vim, :emacs
+end
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
@@ -121,4 +135,4 @@ The gem is available as open source under the terms of the [MIT License](http://
 
 ## Copyright
 
-Copyright (c) 2017-2018 Piotr Murach. See LICENSE for further details.
+Copyright (c) 2017 Piotr Murach. See LICENSE for further details.
