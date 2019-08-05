@@ -6,7 +6,7 @@ Gem::Specification.new do |spec|
   spec.name          = "tty-editor"
   spec.version       = TTY::Editor::VERSION
   spec.authors       = ["Piotr Murach"]
-  spec.email         = [""]
+  spec.email         = ["me@piotrmurach.com"]
 
   spec.summary       = %q{Opens a file or text in the user's preferred editor.}
   spec.description   = %q{Opens a file or text in the user's preferred editor.}
@@ -20,10 +20,10 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = '>= 2.0.0'
 
-  spec.add_dependency 'tty-prompt',   '~> 0.18'
+  spec.add_dependency 'tty-prompt',   '~> 0.19'
   spec.add_dependency 'tty-which',    '~> 0.4'
 
-  spec.add_development_dependency 'bundler', '>= 1.5.0', '< 2.0'
-  spec.add_development_dependency 'rake',  '~> 10.0'
+  spec.add_development_dependency 'bundler', '>= 1.5.0'
+  spec.add_development_dependency 'rake'
   spec.add_development_dependency 'rspec', '~> 3.0'
 end
