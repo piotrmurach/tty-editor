@@ -1,5 +1,11 @@
 # Change log
 
+## [v0.5.1] - 2019-08-06
+
+### Changed
+* Change to update tty-prompt dependency
+* Change to relax bundler & rake version requirement
+
 ## [v0.5.0] - 2018-12-18
 
 ### Changed
@@ -57,6 +63,7 @@
 
 * Initial implementation and release
 
+[v0.5.1]: https://github.com/piotrmurach/tty-editor/compare/v0.5.0...v0.5.1
 [v0.5.0]: https://github.com/piotrmurach/tty-editor/compare/v0.4.1...v0.5.0
 [v0.4.1]: https://github.com/piotrmurach/tty-editor/compare/v0.4.0...v0.4.1
 [v0.4.0]: https://github.com/piotrmurach/tty-editor/compare/v0.3.0...v0.4.0
