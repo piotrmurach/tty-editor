@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require 'tty-prompt'
-require 'tty-which'
-require 'tempfile'
-require 'fileutils'
-require 'shellwords'
+require "tty-prompt"
+require "tty-which"
+require "tempfile"
+require "fileutils"
+require "shellwords"
 
-require_relative 'editor/version'
+require_relative "editor/version"
 
 module TTY
   # A class responsible for launching an editor
@@ -43,7 +43,7 @@ module TTY
     #
     # @api public
     def self.from_env
-      [ENV['VISUAL'], ENV['EDITOR']].compact
+      [ENV["VISUAL"], ENV["EDITOR"]].compact
     end
 
     # List possible executable for editor command
@@ -52,7 +52,7 @@ module TTY
     #
     # @api public
     def self.executables
-      ['vim', 'vi', 'emacs', 'nano', 'nano-tiny', 'pico', 'mate -w']
+      ["vim", "vi", "emacs", "nano", "nano-tiny", "pico", "mate -w"]
     end
 
     # Find available command
@@ -69,7 +69,7 @@ module TTY
       if !from_env.all?(&:empty?)
         [from_env.find { |e| !e.empty? }]
       elsif windows?
-        ['notepad']
+        ["notepad"]
       else
         executables.uniq.select(&method(:exist?))
       end
@@ -78,7 +78,7 @@ module TTY
     # Open file in system editor
     #
     # @example
-    #   TTY::Editor.open('filename.rb')
+    #   TTY::Editor.open("filename.rb")
     #
     # @param [String] file
     #   the name of the file
@@ -113,7 +113,7 @@ module TTY
           raise ArgumentError, "Don't know how to handle `#{@filename}`. " \
                                "Please provida a file path or content"
         elsif ::File.exist?(@filename) && !options[:content].to_s.empty?
-          ::File.open(@filename, 'a') { |f| f.write(options[:content]) }
+          ::File.open(@filename, "a") { |f| f.write(options[:content]) }
         elsif !::File.exist?(@filename)
           ::File.write(@filename, options[:content])
         end
@@ -146,7 +146,7 @@ module TTY
       execs = self.class.available(*commands)
       if execs.empty?
         raise EditorNotFoundError,
-              'Could not find editor to use. Please specify $VISUAL or $EDITOR'
+              "Could not find editor to use. Please specify $VISUAL or $EDITOR"
       end
       exec = choose_exec_from(execs)
       @command = TTY::Which.which(exec.to_s)
@@ -156,7 +156,7 @@ module TTY
     def choose_exec_from(execs)
       if execs.size > 1
         prompt = TTY::Prompt.new
-        prompt.enum_select('Select an editor?', execs)
+        prompt.enum_select("Select an editor?", execs)
       else
         execs[0]
       end
@@ -185,7 +185,7 @@ module TTY
     # @return [String]
     # @api private
     def tempfile_path(content)
-      tempfile = Tempfile.new('tty-editor')
+      tempfile = Tempfile.new("tty-editor")
       tempfile << content
       tempfile.flush
       unless tempfile.nil?
@@ -202,8 +202,8 @@ module TTY
     def open
       status = system(env, *Shellwords.split(command_path))
       return status if status
-      fail CommandInvocationError,
-           "`#{command_path}` failed with status: #{$? ? $?.exitstatus : nil}"
+      raise CommandInvocationError,
+            "`#{command_path}` failed with status: #{$? ? $?.exitstatus : nil}"
     end
   end # Editor
 end # TTY
