@@ -19,13 +19,20 @@ module TTY
     # Raised when editor cannot be found
     class EditorNotFoundError < RuntimeError; end
 
-    # Check if editor exists
+    # Check if editor command exists
+    #
+    # @example
+    #   exist?("vim") # => true
     #
     # @return [Boolean]
     #
     # @api private
-    def self.exist?(cmd)
-      TTY::Which.exist?(cmd)
+    def self.exist?(command)
+      exts = ENV.fetch("PATHEXT", "").split(::File::PATH_SEPARATOR)
+      ENV.fetch("PATH", "").split(File::PATH_SEPARATOR).any? do |dir|
+        file = ::File.join(dir, command)
+        ::File.exist?(file) || exts.any? { |ext| ::File.exist?("#{file}#{ext}") }
+      end
     end
 
     # Check if Windowz
