@@ -1,11 +1,21 @@
 # frozen_string_literal: true
 
 RSpec.describe TTY::Editor, "#command" do
-  it "specifies desired editor" do
+  it "specifies desired editor with keyword argument" do
     editor = TTY::Editor.new(fixtures_path("content.txt"), command: :vim)
     allow(TTY::Editor).to receive(:available).and_return(["vim"])
 
     expect(editor.command).to eq(:vim)
+  end
+
+  it "specifies desired editor via EDITOR env variable" do
+    allow(ENV).to receive(:[]).with("VISUAL").and_return(nil)
+    allow(ENV).to receive(:[]).with("EDITOR").and_return("ed -f")
+    allow(described_class).to receive(:exist?).with("ed").and_return(true)
+
+    editor = TTY::Editor.new(fixtures_path("content.txt"))
+
+    expect(editor.command).to eq("ed -f")
   end
 
   it "doesn't find any available editor" do
