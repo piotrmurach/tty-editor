@@ -85,16 +85,22 @@ module TTY
     # Open file in system editor
     #
     # @example
-    #   TTY::Editor.open("filename.rb")
+    #   TTY::Editor.open("/path/to/filename")
     #
-    # @param [String] file
+    # @param [String] filename
     #   the name of the file
+    # @param [String] :command
+    #   the editor command to use, by default auto detects
+    # @param [String] :contet
+    #   the content to edit
+    # @param [Hash] :env
+    #   environment variables to forward to the editor
     #
     # @return [Object]
     #
     # @api public
-    def self.open(*args)
-      editor = new(*args)
+    def self.open(filename = nil, **options)
+      editor = new(filename, **options)
 
       yield(editor) if block_given?
 
@@ -103,29 +109,30 @@ module TTY
 
     # Initialize an Editor
     #
-    # @param [String] file
-    # @param [Hash[Symbol]] options
-    # @option options [Hash] :command
+    # @param [String] filenmame
+    # @param [String] :command
     #   the editor command to use, by default auto detects
-    # @option options [Hash] :env
+    # @param [String] :contet
+    #   the content to edit
+    # @param [Hash] :env
     #   environment variables to forward to the editor
     #
     # @api public
-    def initialize(*args, **options)
-      @filename = args.unshift.first
-      @env      = options.fetch(:env) { {} }
-      @command  = options[:command]
+    def initialize(filename = nil, command: nil, content: nil, env: {})
+      @filename = filename
+      @env      = env
+      @command  = command
       if @filename
         if ::File.exist?(@filename) && !::FileTest.file?(@filename)
           raise ArgumentError, "Don't know how to handle `#{@filename}`. " \
                                "Please provida a file path or content"
-        elsif ::File.exist?(@filename) && !options[:content].to_s.empty?
-          ::File.open(@filename, "a") { |f| f.write(options[:content]) }
+        elsif ::File.exist?(@filename) && !content.to_s.empty?
+          ::File.open(@filename, "a") { |f| f.write(content) }
         elsif !::File.exist?(@filename)
-          ::File.write(@filename, options[:content])
+          ::File.write(@filename, content)
         end
-      elsif options[:content]
-        @filename = tempfile_path(options[:content])
+      elsif content
+        @filename = tempfile_path(content)
       end
     end
 
