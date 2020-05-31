@@ -1,7 +1,12 @@
 # frozen_string_literal: true
 
-require_relative '../lib/tty-editor'
+require_relative "../lib/tty-editor"
 
-content = "Human madness is oftentimes a cunning and most feline thing.\n When you think it fled, it may have but become transfigured into some still subtler form."
+text = <<-EOS
+Human madness is oftentimes a cunning and most feline thing.
 
-TTY::Editor.open(content: content)
+When you think it fled, it may have but become
+transfigured into some still subtler form."
+EOS
+
+TTY::Editor.open(content: text)
