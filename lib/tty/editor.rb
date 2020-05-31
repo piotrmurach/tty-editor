@@ -122,16 +122,18 @@ module TTY
       @filename = filename
       @env      = env
       @command  = command
-      if @filename
-        if ::File.exist?(@filename) && !::FileTest.file?(@filename)
-          raise ArgumentError, "Don't know how to handle `#{@filename}`. " \
-                               "Please provida a file path or content"
-        elsif ::File.exist?(@filename) && !content.to_s.empty?
-          ::File.open(@filename, "a") { |f| f.write(content) }
-        elsif !::File.exist?(@filename)
-          ::File.write(@filename, content)
+
+      if !filename.nil?
+        if ::File.exist?(filename) && !content.nil?
+          raise ArgumentError,
+                "cannot give a path to an existing file and text at the same time."
+        elsif ::File.exist?(filename) && !::FileTest.file?(filename)
+          raise ArgumentError, "don't know how to handle `#{filename}`. " \
+                               "Please provide a file path or text"
+        elsif !::File.exist?(filename)
+          ::File.write(filename, content || "")
         end
-      elsif content
+      elsif !content.nil?
         @filename = tempfile_path(content)
       end
     end
