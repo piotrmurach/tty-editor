@@ -12,6 +12,11 @@ module TTY
   #
   # @api public
   class Editor
+    Error = Class.new(StandardError)
+
+    # Raised when user provides unnexpected or incorrect argument
+    InvalidArgumentError = Class.new(Error)
+
     # Raised when command cannot be invoked
     class CommandInvocationError < RuntimeError; end
 
@@ -117,11 +122,11 @@ module TTY
 
       if !filename.nil?
         if ::File.exist?(filename) && !content.nil?
-          raise ArgumentError,
+          raise InvalidArgumentError,
                 "cannot give a path to an existing file and text at the same time."
         elsif ::File.exist?(filename) && !::FileTest.file?(filename)
-          raise ArgumentError, "don't know how to handle `#{filename}`. " \
-                               "Please provide a file path or text"
+          raise InvalidArgumentError, "don't know how to handle `#{filename}`. " \
+                                      "Please provide a file path or text"
         elsif !::File.exist?(filename)
           ::File.write(filename, content || "")
         end

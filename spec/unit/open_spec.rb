@@ -8,7 +8,7 @@ RSpec.describe TTY::Editor, "#open" do
 
     expect {
       TTY::Editor.new(file, content: "some text")
-    }.to raise_error(ArgumentError,
+    }.to raise_error(TTY::Editor::InvalidArgumentError,
                      "cannot give a path to an existing file and " \
                      "text at the same time.")
   end
@@ -16,7 +16,7 @@ RSpec.describe TTY::Editor, "#open" do
   it "fails to open non-file" do
     expect {
       TTY::Editor.open(fixtures_path)
-    }.to raise_error(ArgumentError,
+    }.to raise_error(TTY::Editor::InvalidArgumentError,
                      "don't know how to handle `#{fixtures_path}`. " \
                      "Please provide a file path or text")
   end
