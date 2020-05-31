@@ -34,14 +34,23 @@ module TTY
       end
     end
 
+    # Check editor from environment variables
+    #
+    # @return [Array[String]]
+    #
+    # @api public
+    def self.from_env
+      [ENV["VISUAL"], ENV["EDITOR"]].compact
+    end
+
     # List possible command line text editors
     #
     # @return [Array[String]]
     #
     # @api public
     def self.executables
-      [ENV["VISUAL"], ENV["EDITOR"], "nano", "nano-tiny", "notepad", "vim", "vi",
-       "emacs", "pico", "sublime", "mate -w"].compact
+      ["nano", "nano-tiny", "notepad", "vim", "vi", "emacs",
+       "pico", "sublime", "mate -w"]
     end
 
     # Find available text editors
@@ -54,7 +63,13 @@ module TTY
     #
     # @api public
     def self.available(*commands)
-      execs = commands.empty? ? executables : commands
+      execs = if !commands.empty?
+                commands
+              elsif from_env.any?
+                [from_env.first]
+              else
+                executables
+              end
       execs.compact.map(&:strip).reject(&:empty?).uniq
            .select { |exec| exist?(exec.split.first) }
     end
