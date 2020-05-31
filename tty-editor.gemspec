@@ -25,7 +25,6 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = Gem::Requirement.new(">= 2.0.0")
 
   spec.add_dependency "tty-prompt",   "~> 0.19"
-  spec.add_dependency "tty-which",    "~> 0.4"
 
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec", "~> 3.0"
