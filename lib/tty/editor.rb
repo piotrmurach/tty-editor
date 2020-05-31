@@ -35,51 +35,29 @@ module TTY
       end
     end
 
-    # Check if Windowz
-    #
-    # @return [Boolean]
-    #
-    # @api public
-    def self.windows?
-      ::File::ALT_SEPARATOR == "\\"
-    end
-
-    # Check editor from environment variables
-    #
-    # @return [Array[String]]
-    #
-    # @api public
-    def self.from_env
-      [ENV["VISUAL"], ENV["EDITOR"]].compact
-    end
-
-    # List possible executable for editor command
+    # List possible command line text editors
     #
     # @return [Array[String]]
     #
     # @api public
     def self.executables
-      ["vim", "vi", "emacs", "nano", "nano-tiny", "pico", "mate -w"]
+      [ENV["VISUAL"], ENV["EDITOR"], "nano", "nano-tiny", "notepad", "vim", "vi",
+       "emacs", "pico", "sublime", "mate -w"].compact
     end
 
-    # Find available command
+    # Find available text editors
     #
     # @param [Array[String]] commands
     #   the commands to use intstead of defaults
     #
     # @return [Array[String]]
+    #   the existing editor commands
     #
     # @api public
     def self.available(*commands)
-      return commands unless commands.empty?
-
-      if !from_env.all?(&:empty?)
-        [from_env.find { |e| !e.empty? }]
-      elsif windows?
-        ["notepad"]
-      else
-        executables.uniq.select(&method(:exist?))
-      end
+      execs = commands.empty? ? executables : commands
+      execs.compact.map(&:strip).reject(&:empty?).uniq
+           .select { |exec| exist?(exec.split.first) }
     end
 
     # Open file in system editor
