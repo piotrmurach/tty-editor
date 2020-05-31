@@ -2,12 +2,10 @@
 
 RSpec.describe TTY::Editor, "#command" do
   it "specifies desired editor" do
-    editor = TTY::Editor.new(fixtures_path("content.txt"))
-
+    editor = TTY::Editor.new(fixtures_path("content.txt"), command: :vim)
     allow(TTY::Editor).to receive(:available).and_return(["vim"])
-    allow(TTY::Which).to receive(:which).with("vim").and_return("/usr/bin/vim")
 
-    expect(editor.command).to eq("/usr/bin/vim")
+    expect(editor.command).to eq(:vim)
   end
 
   it "doesn't find any available editor" do
@@ -22,11 +20,9 @@ RSpec.describe TTY::Editor, "#command" do
 
   it "finds only one editor" do
     editor = TTY::Editor.new(fixtures_path("content.txt"))
-
     allow(TTY::Editor).to receive(:available).and_return(["vim"])
-    allow(TTY::Which).to receive(:which).with("vim").and_return("/usr/bin/vim")
 
-    expect(editor.command).to eq("/usr/bin/vim")
+    expect(editor.command).to eq("vim")
   end
 
   it "finds more than one editor" do
@@ -35,17 +31,15 @@ RSpec.describe TTY::Editor, "#command" do
     prompt = double(:prompt, enum_select: "vim")
 
     allow(TTY::Editor).to receive(:available).and_return(["vim", "emacs"])
-    allow(TTY::Which).to receive(:which).with("vim").and_return("/usr/bin/vim")
     allow(TTY::Prompt).to receive(:new).and_return(prompt)
 
-    expect(editor.command).to eq("/usr/bin/vim")
+    expect(editor.command).to eq("vim")
   end
 
   it "caches editor name" do
     editor = TTY::Editor.new(fixtures_path("content.txt"))
 
     allow(TTY::Editor).to receive(:available).and_return(["vim"])
-    allow(TTY::Which).to receive(:which).with("vim").and_return("/usr/bin/vim")
 
     editor.command
     editor.command

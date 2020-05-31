@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "tty-prompt"
-require "tty-which"
 require "tempfile"
 require "fileutils"
 require "shellwords"
@@ -143,7 +142,7 @@ module TTY
               "Could not find editor to use. Please specify $VISUAL or $EDITOR"
       end
       exec = choose_exec_from(execs)
-      @command = TTY::Which.which(exec.to_s)
+      @command = exec.to_s
     end
 
     # @api private
