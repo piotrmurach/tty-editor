@@ -14,7 +14,7 @@ RSpec.describe TTY::Editor do
 
     expect {
       described_class.open(content: "Some text", command: editor_command)
-    }.to output("Some text").to_stdout_from_any_process
+    }.to output(/Some text/).to_stdout_from_any_process
   end
 
   it "opens an existing file in an editor" do
@@ -23,7 +23,7 @@ RSpec.describe TTY::Editor do
 
     expect {
       described_class.open(file, command: editor_command)
-    }.to output("one\ntwo\nthree\n").to_stdout_from_any_process
+    }.to output(/one\ntwo\nthree\n/).to_stdout_from_any_process
   end
 
   it "opens a new file in an editor" do
@@ -40,7 +40,7 @@ RSpec.describe TTY::Editor do
     expect {
       described_class.open("newfile.txt", content: "Some text",
                           command: editor_command)
-    }.to output("Some text").to_stdout_from_any_process
+    }.to output(/Some text/).to_stdout_from_any_process
 
     expect(::File.read("newfile.txt")).to eq("Some text")
   end
