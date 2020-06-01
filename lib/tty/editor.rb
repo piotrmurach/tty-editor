@@ -119,6 +119,7 @@ module TTY
       @filename = filename
       @env      = env
       @command  = command
+      @tempfile = nil
 
       if !filename.nil?
         if ::File.exist?(filename) && !content.nil?
@@ -131,7 +132,8 @@ module TTY
           ::File.write(filename, content || "")
         end
       elsif !content.nil?
-        @filename = tempfile_path(content)
+        @tempfile = create_tempfile(content)
+        @filename = @tempfile.path
       end
     end
 
@@ -195,16 +197,15 @@ module TTY
     #
     # @param [String] content
     #
-    # @return [String]
+    # @return [Tempfile]
+    #
     # @api private
-    def tempfile_path(content)
+    def create_tempfile(content)
       tempfile = Tempfile.new("tty-editor")
       tempfile << content
       tempfile.flush
-      unless tempfile.nil?
-        tempfile.close
-      end
-      tempfile.path
+      tempfile.close
+      tempfile
     end
 
     # Inovke editor command in a shell
@@ -217,6 +218,8 @@ module TTY
       return status if status
       raise CommandInvocationError,
             "`#{command_path}` failed with status: #{$? ? $?.exitstatus : nil}"
+    ensure
+      @tempfile.unlink if @tempfile
     end
   end # Editor
 end # TTY

@@ -55,19 +55,17 @@ RSpec.describe TTY::Editor, "#open" do
   end
 
   it "opens content in a temp file" do
-    tmp_file = StringIO.new
-    def tmp_file.path
-      "tty-editor-path"
-    end
-    allow(Tempfile).to receive(:new).and_return(tmp_file)
-    allow(tmp_file).to receive(:<<)
+    tempfile = spy
+    allow(tempfile).to receive(:path).and_return("tmp-editor-path")
+    allow(Tempfile).to receive(:new).and_return(tempfile)
     editor = TTY::Editor.new(content: "some text", command: :vim)
-
     allow(editor).to receive(:system).and_return(true)
+
     expect(editor.open).to eq(true)
 
-    expect(editor).to have_received(:system).with({}, "vim", "tty-editor-path")
-    expect(tmp_file).to have_received(:<<).with("some text")
+    expect(editor).to have_received(:system).with({}, "vim", "tmp-editor-path")
+    expect(tempfile).to have_received(:<<).with("some text")
+    expect(tempfile).to have_received(:unlink)
   end
 
   it "opens editor without filename or content" do
