@@ -167,31 +167,30 @@ module TTY
       @command = exec.to_s
     end
 
-    # @api private
-    def choose_exec_from(execs)
-      if execs.size > 1
-        prompt = TTY::Prompt.new
-        prompt.enum_select("Select an editor?", execs)
-      else
-        execs[0]
-      end
-    end
-
-    # Escape file path
-    #
-    # @api private
-    def escape_file
-      Shellwords.shellescape(@filename)
-    end
-
     # Build command path to invoke
     #
     # @return [String]
     #
-    # @api private
+    # @api public
     def command_path
       "#{command} #{escape_file}"
     end
+
+    # Run editor command in a shell
+    #
+    # @raise [TTY::CommandInvocationError]
+    #
+    # @api private
+    def open
+      status = system(env, *Shellwords.split(command_path))
+      return status if status
+      raise CommandInvocationError,
+            "`#{command_path}` failed with status: #{$? ? $?.exitstatus : nil}"
+    ensure
+      @tempfile.unlink if @tempfile
+    end
+
+    private
 
     # Create tempfile with content
     #
@@ -208,18 +207,21 @@ module TTY
       tempfile
     end
 
-    # Inovke editor command in a shell
-    #
-    # @raise [TTY::CommandInvocationError]
+    # @api private
+    def choose_exec_from(execs)
+      if execs.size > 1
+        prompt = TTY::Prompt.new
+        prompt.enum_select("Select an editor?", execs)
+      else
+        execs[0]
+      end
+    end
+
+    # Escape file path
     #
     # @api private
-    def open
-      status = system(env, *Shellwords.split(command_path))
-      return status if status
-      raise CommandInvocationError,
-            "`#{command_path}` failed with status: #{$? ? $?.exitstatus : nil}"
-    ensure
-      @tempfile.unlink if @tempfile
+    def escape_file
+      Shellwords.shellescape(@filename)
     end
   end # Editor
 end # TTY
