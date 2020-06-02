@@ -23,6 +23,17 @@ module TTY
     # Raised when editor cannot be found
     class EditorNotFoundError < RuntimeError; end
 
+    # List possible command line text editors
+    #
+    # @return [Array[String]]
+    #
+    # @api public
+    EXECUTABLES = [
+      "nano -w", "notepad", "vim", "vi", "emacs",
+      "subl -n -w", "mate -w", "atom",
+      "pico", "qe", "mg", "jed"
+    ].freeze
+
     # Check if editor command exists
     #
     # @example
@@ -48,17 +59,6 @@ module TTY
       [ENV["VISUAL"], ENV["EDITOR"]].compact
     end
 
-    # List possible command line text editors
-    #
-    # @return [Array[String]]
-    #
-    # @api public
-    def self.executables
-      ["nano -w", "notepad", "vim", "vi", "emacs",
-       "subl -n -w", "mate -w", "atom",
-       "pico", "qe", "mg", "jed"]
-    end
-
     # Find available text editors
     #
     # @param [Array[String]] commands
@@ -74,7 +74,7 @@ module TTY
               elsif from_env.any?
                 [from_env.first]
               else
-                executables
+                EXECUTABLES
               end
       execs.compact.map(&:strip).reject(&:empty?).uniq
            .select { |exec| exist?(exec.split.first) }
@@ -166,7 +166,7 @@ module TTY
         raise EditorNotFoundError,
               "could not find a text editor to use. Please specify $VISUAL or "\
               "$EDITOR or install one of the following editors: " \
-              "#{self.class.executables.map{ |ed| ed.split.first }.join(", ")}."
+              "#{EXECUTABLES.map { |ed| ed.split.first }.join(", ")}."
       end
       @command = choose_exec_from(execs)
     end
