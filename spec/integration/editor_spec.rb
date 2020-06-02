@@ -71,7 +71,9 @@ RSpec.describe TTY::Editor do
       "  Choose 1-2 [1]: 2",
       "\e[2K\e[1G\e[1A" * 3,
       "\e[2K\e[1G\e[J",
-      "Select an editor? \e[32m#{echo}\e[0m\n#{file}\n"
+      "Select an editor? \e[32m#{echo}\e[0m\n",
+      "\e[1A\e[2K\e[1G",
+      "#{file}\n"
     ].join
 
     expect {

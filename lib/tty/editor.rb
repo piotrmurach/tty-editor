@@ -215,7 +215,9 @@ module TTY
     def choose_exec_from(execs)
       if execs.size > 1
         prompt = TTY::Prompt.new
-        prompt.enum_select("Select an editor?", execs)
+        exec = prompt.enum_select("Select an editor?", execs)
+        print prompt.cursor.up + prompt.cursor.clear_line
+        exec
       else
         execs[0]
       end

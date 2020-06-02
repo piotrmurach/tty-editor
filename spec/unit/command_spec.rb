@@ -40,7 +40,7 @@ RSpec.describe TTY::Editor, "#command" do
 
   it "finds more than one editor" do
     allow(described_class).to receive(:available).and_return(["vim", "emacs"])
-    prompt = double(:prompt, enum_select: "vim")
+    prompt = spy(:prompt, enum_select: "vim", up: "", clear_line: "")
     allow(TTY::Prompt).to receive(:new).and_return(prompt)
 
     editor = described_class.new(fixtures_path("content.txt"))
