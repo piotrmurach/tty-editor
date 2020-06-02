@@ -54,8 +54,8 @@ module TTY
     #
     # @api public
     def self.executables
-      ["nano", "nano-tiny", "notepad", "vim", "vi", "emacs",
-       "pico", "sublime", "mate -w"]
+      ["nano -w", "notepad", "vim", "vi", "emacs",
+       "pico", "subl -n -w", "mate -w", "atom"]
     end
 
     # Find available text editors
