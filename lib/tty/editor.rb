@@ -164,7 +164,9 @@ module TTY
       execs = self.class.available(*commands)
       if execs.empty?
         raise EditorNotFoundError,
-              "Could not find editor to use. Please specify $VISUAL or $EDITOR"
+              "could not find a text editor to use. Please specify $VISUAL or "\
+              "$EDITOR or install one of the following editors: " \
+              "#{self.class.executables.map{ |ed| ed.split.first }.join(", ")}."
       end
       @command = choose_exec_from(execs)
     end

@@ -24,7 +24,10 @@ RSpec.describe TTY::Editor, "#command" do
     expect {
       described_class.new(fixtures_path("content.txt"))
     }.to raise_error(TTY::Editor::EditorNotFoundError,
-      /Could not find editor to use. Please specify \$VISUAL or \$EDITOR/)
+                     "could not find a text editor to use. Please specify " \
+                     "$VISUAL or $EDITOR or install one of the following " \
+                     "editors: nano, notepad, vim, vi, emacs, subl, mate, " \
+                     "atom, pico, qe, mg, jed.")
   end
 
   it "finds only one editor" do
