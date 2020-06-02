@@ -25,6 +25,18 @@ module Helpers
   def tmp_path(filename = nil)
     File.join(File.dirname(__FILE__), '..', 'tmp', filename.to_s)
   end
+
+  def stub_input(*args)
+    begin
+      io = StringIO.new
+      io.puts(args.shift) until args.empty?
+      io.rewind
+      old_io, $stdin = $stdin, io
+      yield
+    ensure
+      $stdin = old_io
+    end
+  end
 end
 
 RSpec.configure do |config|
