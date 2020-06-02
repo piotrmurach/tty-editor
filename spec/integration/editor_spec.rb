@@ -11,37 +11,44 @@ RSpec.describe TTY::Editor do
 
   it "opens text in an editor" do
     editor_command = "ruby #{fixtures_path("cat.rb")}"
+    status = nil
 
     expect {
-      described_class.open(content: "Some text", command: editor_command)
+      status = described_class.open(content: "Some text", command: editor_command)
     }.to output(/Some text/).to_stdout_from_any_process
+    expect(status).to eq(true)
   end
 
   it "opens an existing file in an editor" do
     editor_command = "ruby #{fixtures_path("cat.rb")}"
     file = fixtures_path("content.txt")
+    status = nil
 
     expect {
-      described_class.open(file, command: editor_command)
+      status = described_class.open(file, command: editor_command)
     }.to output(/one\ntwo\nthree\n/).to_stdout_from_any_process
+    expect(status).to eq(true)
   end
 
   it "opens a new file in an editor" do
     editor_command = "ruby #{fixtures_path("cat.rb")}"
 
-    described_class.open("newfile.txt", command: editor_command)
+    status = described_class.open("newfile.txt", command: editor_command)
 
+    expect(status).to eq(true)
     expect(::File.exist?("newfile.txt")).to eq(true)
   end
 
   it "opens a new file with text in an editor" do
     editor_command = "ruby #{fixtures_path("cat.rb")}"
+    status = nil
 
     expect {
-      described_class.open("newfile.txt", content: "Some text",
-                          command: editor_command)
+      status = described_class.open("newfile.txt", content: "Some text",
+                                    command: editor_command)
     }.to output(/Some text/).to_stdout_from_any_process
 
+    expect(status).to eq(true)
     expect(::File.read("newfile.txt")).to eq("Some text")
   end
 
@@ -49,6 +56,7 @@ RSpec.describe TTY::Editor do
     file = fixtures_path("content.txt")
     cat = "ruby #{fixtures_path("cat.rb")}"
     echo = "ruby #{fixtures_path("echo.rb")}"
+    status = nil
 
     expected_output = [
       "Select an editor? \n",
@@ -67,9 +75,10 @@ RSpec.describe TTY::Editor do
     ].join
 
     expect {
-     stub_input "2\n" do
-        described_class.open(file, command: [cat, echo])
+      stub_input "2\n" do
+        status = described_class.open(file, command: [cat, echo])
       end
     }.to output(expected_output).to_stdout_from_any_process
+    expect(status).to eq(true)
   end
 end
