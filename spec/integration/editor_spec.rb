@@ -44,4 +44,32 @@ RSpec.describe TTY::Editor do
 
     expect(::File.read("newfile.txt")).to eq("Some text")
   end
+
+  it "shows an editor choice menu and selects second option" do
+    file = fixtures_path("content.txt")
+    cat = "ruby #{fixtures_path("cat.rb")}"
+    echo = "ruby #{fixtures_path("echo.rb")}"
+
+    expected_output = [
+      "Select an editor? \n",
+      "  \e[32m1) #{cat}\e[0m\n",
+      "  2) #{echo}\n",
+      "  Choose 1-2 [1]: ",
+      "\e[2K\e[1G\e[1A" * 3,
+      "\e[2K\e[1G\e[J",
+      "Select an editor? \n",
+      "  1) #{cat}\n",
+      "  \e[32m2) #{echo}\e[0m\n",
+      "  Choose 1-2 [1]: 2",
+      "\e[2K\e[1G\e[1A" * 3,
+      "\e[2K\e[1G\e[J",
+      "Select an editor? \e[32m#{echo}\e[0m\n#{file}\n"
+    ].join
+
+    expect {
+     stub_input "2\n" do
+        described_class.open(file, command: [cat, echo])
+      end
+    }.to output(expected_output).to_stdout_from_any_process
+  end
 end

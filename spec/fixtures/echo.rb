@@ -1,0 +1,1 @@
+STDOUT.puts(ARGV.join(" "))
