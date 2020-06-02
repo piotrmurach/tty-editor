@@ -5,7 +5,8 @@ RSpec.describe TTY::Editor, "#tempfile_path" do
     tempfile = spy
     allow(Tempfile).to receive(:new).and_return(tempfile)
     allow(tempfile).to receive(:path).and_return("temp-path")
-    editor = TTY::Editor.new(content: "Multiline\ncontent", command: :vim)
+    allow(described_class).to receive(:available).and_return(["vim"])
+    editor = TTY::Editor.new(content: "Multiline\ncontent", command: "vim")
     allow(editor).to receive(:system).and_return(true)
 
     editor.open

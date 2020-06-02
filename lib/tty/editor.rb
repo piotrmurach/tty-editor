@@ -117,9 +117,9 @@ module TTY
     # @api public
     def initialize(filename = nil, command: nil, content: nil, env: {})
       @filename = filename
-      @env      = env
-      @command  = command
       @tempfile = nil
+      @env      = env
+      @command  = nil
 
       if !filename.nil?
         if ::File.exist?(filename) && !content.nil?
@@ -135,6 +135,8 @@ module TTY
         @tempfile = create_tempfile(content)
         @filename = @tempfile.path
       end
+
+      command(*Array(command))
     end
 
     # Read or update environment vars
@@ -163,8 +165,7 @@ module TTY
         raise EditorNotFoundError,
               "Could not find editor to use. Please specify $VISUAL or $EDITOR"
       end
-      exec = choose_exec_from(execs)
-      @command = exec.to_s
+      @command = choose_exec_from(execs)
     end
 
     # Build command path to invoke
