@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe TTY::Editor, "#tempfile_path" do
+RSpec.describe TTY::Editor do
   it "creates temporary file path for content" do
     tempfile = spy
     allow(Tempfile).to receive(:new).and_return(tempfile)
@@ -11,7 +11,7 @@ RSpec.describe TTY::Editor, "#tempfile_path" do
 
     editor.open(content: "Multiline\ncontent")
 
-    expect(editor.command_path).to eql("vim temp-path")
+    expect(editor).to have_received(:system).with({}, "vim", "temp-path")
     expect(tempfile).to have_received(:unlink)
   end
 end

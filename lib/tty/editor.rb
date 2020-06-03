@@ -157,15 +157,6 @@ module TTY
       @command = choose_exec_from(execs)
     end
 
-    # Build command path to invoke
-    #
-    # @return [String]
-    #
-    # @api public
-    def command_path
-      "#{command} #{escape_file}"
-    end
-
     # Run editor command in a shell
     #
     # @param [String] filenmame
@@ -177,15 +168,16 @@ module TTY
     # @api private
     def open(filename = nil, content: nil)
       validate_arguments(filename, content)
-      @filename = filename
 
       if !filename.nil? && !::File.exist?(filename)
         ::File.write(filename, content || "")
       elsif !content.nil?
         tempfile = create_tempfile(content)
-        @filename = tempfile.path
+        filename = tempfile.path
       end
 
+      escaped_file = Shellwords.shellescape(filename)
+      command_path = "#{command} #{escaped_file}"
       status = system(env, *Shellwords.split(command_path))
       return status if status
       raise CommandInvocationError,
@@ -228,6 +220,11 @@ module TTY
       tempfile
     end
 
+    # Render an editor selection prompt to the terminal
+    #
+    # @return [String]
+    #   the chosen editor
+    #
     # @api private
     def choose_exec_from(execs)
       if execs.size > 1
@@ -238,13 +235,6 @@ module TTY
       else
         execs[0]
       end
-    end
-
-    # Escape file path
-    #
-    # @api private
-    def escape_file
-      Shellwords.shellescape(@filename)
     end
   end # Editor
 end # TTY

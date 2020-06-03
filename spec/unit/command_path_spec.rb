@@ -11,7 +11,8 @@ RSpec.describe TTY::Editor, "#command" do
     allow(editor).to receive(:system).and_return(true)
     editor.open(filename)
 
-    expect(editor.command_path).to eql("vim /usr/bin/hello\\ world.rb")
+    expect(editor).to have_received(:system).
+      with({}, "vim", "/usr/bin/hello world.rb")
   end
 
   it "escapes path separators on Windows" do
@@ -24,6 +25,7 @@ RSpec.describe TTY::Editor, "#command" do
     allow(editor).to receive(:system).and_return(true)
     editor.open(filename)
 
-    expect(editor.command_path).to eql('vim C:\\\\User\\\\hello\\ world.rb')
+    expect(editor).to have_received(:system).
+      with({}, "vim", "C:\\User\\hello world.rb")
   end
 end
