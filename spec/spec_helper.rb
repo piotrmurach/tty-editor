@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-if ENV['COVERAGE'] || ENV['TRAVIS']
-  require 'simplecov'
-  require 'coveralls'
+if ENV["COVERAGE"] || ENV["TRAVIS"]
+  require "simplecov"
+  require "coveralls"
 
   SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
     SimpleCov::Formatter::HTMLFormatter,
@@ -10,32 +10,21 @@ if ENV['COVERAGE'] || ENV['TRAVIS']
   ]
 
   SimpleCov.start do
-    command_name 'spec'
-    add_filter 'spec'
+    command_name "spec"
+    add_filter "spec"
   end
 end
 
-require 'tty/editor'
+require "tty/editor"
+require "stringio"
 
 module Helpers
   def fixtures_path(filename = nil)
-    ::File.join(::File.dirname(__FILE__), 'fixtures', filename.to_s)
+    ::File.join(::File.dirname(__FILE__), "fixtures", filename.to_s)
   end
 
   def tmp_path(filename = nil)
-    File.join(File.dirname(__FILE__), '..', 'tmp', filename.to_s)
-  end
-
-  def stub_input(*args)
-    begin
-      io = StringIO.new
-      io.puts(args.shift) until args.empty?
-      io.rewind
-      old_io, $stdin = $stdin, io
-      yield
-    ensure
-      $stdin = old_io
-    end
+    File.join(File.dirname(__FILE__), "..", "tmp", filename.to_s)
   end
 end
 
@@ -58,7 +47,7 @@ RSpec.configure do |config|
   config.warnings = true
 
   if config.files_to_run.one?
-    config.default_formatter = 'doc'
+    config.default_formatter = "doc"
   end
 
   config.profile_examples = 2
