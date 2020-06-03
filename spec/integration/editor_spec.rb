@@ -57,6 +57,8 @@ RSpec.describe TTY::Editor do
     cat = "ruby #{fixtures_path("cat.rb")}"
     echo = "ruby #{fixtures_path("echo.rb")}"
     status = nil
+    input = StringIO.new
+    output = StringIO.new
 
     expected_output = [
       "Select an editor? \n",
@@ -73,14 +75,18 @@ RSpec.describe TTY::Editor do
       "\e[2K\e[1G\e[J",
       "Select an editor? \e[32m#{echo}\e[0m\n",
       "\e[1A\e[2K\e[1G",
-      "#{file}\n"
     ].join
 
     expect {
-      stub_input "2\n" do
-        status = described_class.open(file, command: [cat, echo])
-      end
-    }.to output(expected_output).to_stdout_from_any_process
+      input << "2\n"
+      input.rewind
+
+      editor = described_class.new(file, command: [cat, echo], input: input,
+                                   output: output, env: {"TTY_TEST" => "true"})
+      status = editor.open
+    }.to output(/#{file}/).to_stdout_from_any_process
+
+    expect(output.string).to eq(expected_output)
     expect(status).to eq(true)
   end
 end

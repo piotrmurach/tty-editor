@@ -114,13 +114,20 @@ module TTY
     #   the content to edit
     # @param [Hash] :env
     #   environment variables to forward to the editor
+    # @param [IO] :input
+    #   the standard input
+    # @param [IO] :output
+    #   the standard output
     #
     # @api public
-    def initialize(filename = nil, command: nil, content: nil, env: {})
+    def initialize(filename = nil, command: nil, content: nil, env: {},
+                   input: $stdin, output: $stdout)
       @filename = filename
       @tempfile = nil
       @env      = env
       @command  = nil
+      @input    = input
+      @output   = output
 
       if !filename.nil?
         if ::File.exist?(filename) && !content.nil?
@@ -214,9 +221,9 @@ module TTY
     # @api private
     def choose_exec_from(execs)
       if execs.size > 1
-        prompt = TTY::Prompt.new
+        prompt = TTY::Prompt.new(input: @input, output: @output, env: @env)
         exec = prompt.enum_select("Select an editor?", execs)
-        print prompt.cursor.up + prompt.cursor.clear_line
+        @output.print(prompt.cursor.up + prompt.cursor.clear_line)
         exec
       else
         execs[0]
