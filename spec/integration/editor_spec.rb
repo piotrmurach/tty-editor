@@ -81,9 +81,9 @@ RSpec.describe TTY::Editor do
       input << "2\n"
       input.rewind
 
-      editor = described_class.new(file, command: [cat, echo], input: input,
+      editor = described_class.new(command: [cat, echo], input: input,
                                    output: output, env: {"TTY_TEST" => "true"})
-      status = editor.open
+      status = editor.open(file)
     }.to output(/#{file}/).to_stdout_from_any_process
 
     expect(output.string).to eq(expected_output)

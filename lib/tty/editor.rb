@@ -97,21 +97,18 @@ module TTY
     # @return [Object]
     #
     # @api public
-    def self.open(filename = nil, **options)
-      editor = new(filename, **options)
+    def self.open(filename = nil, content: nil, **options)
+      editor = new(**options)
 
       yield(editor) if block_given?
 
-      editor.open
+      editor.open(filename, content: content)
     end
 
     # Initialize an Editor
     #
-    # @param [String] filenmame
     # @param [String] :command
     #   the editor command to use, by default auto detects
-    # @param [String] :contet
-    #   the content to edit
     # @param [Hash] :env
     #   environment variables to forward to the editor
     # @param [IO] :input
@@ -120,29 +117,11 @@ module TTY
     #   the standard output
     #
     # @api public
-    def initialize(filename = nil, command: nil, content: nil, env: {},
-                   input: $stdin, output: $stdout)
-      @filename = filename
-      @tempfile = nil
+    def initialize(command: nil, env: {}, input: $stdin, output: $stdout)
       @env      = env
       @command  = nil
       @input    = input
       @output   = output
-
-      if !filename.nil?
-        if ::File.exist?(filename) && !content.nil?
-          raise InvalidArgumentError,
-                "cannot give a path to an existing file and text at the same time."
-        elsif ::File.exist?(filename) && !::FileTest.file?(filename)
-          raise InvalidArgumentError, "don't know how to handle `#{filename}`. " \
-                                      "Please provide a file path or text"
-        elsif !::File.exist?(filename)
-          ::File.write(filename, content || "")
-        end
-      elsif !content.nil?
-        @tempfile = create_tempfile(content)
-        @filename = @tempfile.path
-      end
 
       command(*Array(command))
     end
@@ -189,10 +168,32 @@ module TTY
 
     # Run editor command in a shell
     #
+    # @param [String] filenmame
+    # @param [String] :contet
+    #   the content to edit
+    #
     # @raise [TTY::CommandInvocationError]
     #
     # @api private
-    def open
+    def open(filename = nil, content: nil)
+      @filename = filename
+      @tempfile = nil
+
+      if !filename.nil?
+        if ::File.exist?(filename) && !content.nil?
+          raise InvalidArgumentError,
+                "cannot give a path to an existing file and text at the same time."
+        elsif ::File.exist?(filename) && !::FileTest.file?(filename)
+          raise InvalidArgumentError, "don't know how to handle `#{filename}`. " \
+                                      "Please provide a file path or text"
+        elsif !::File.exist?(filename)
+          ::File.write(filename, content || "")
+        end
+      elsif !content.nil?
+        @tempfile = create_tempfile(content)
+        @filename = @tempfile.path
+      end
+
       status = system(env, *Shellwords.split(command_path))
       return status if status
       raise CommandInvocationError,

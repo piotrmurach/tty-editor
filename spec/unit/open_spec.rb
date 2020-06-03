@@ -6,16 +6,20 @@ RSpec.describe TTY::Editor, "#open" do
   it "fails to open an existing file with text parameter" do
     file = fixtures_path("content.txt")
 
+    editor = described_class.new
+
     expect {
-      described_class.new(file, content: "some text")
+      editor.open(file, content: "some text")
     }.to raise_error(TTY::Editor::InvalidArgumentError,
                      "cannot give a path to an existing file and " \
                      "text at the same time.")
   end
 
   it "fails to open non-file" do
+    editor = described_class.new
+
     expect {
-      described_class.open(fixtures_path)
+      editor.open(fixtures_path)
     }.to raise_error(TTY::Editor::InvalidArgumentError,
                      "don't know how to handle `#{fixtures_path}`. " \
                      "Please provide a file path or text")
@@ -25,10 +29,10 @@ RSpec.describe TTY::Editor, "#open" do
     file = "non-existing.txt"
     allow(::File).to receive(:write).with(file, "")
     allow(described_class).to receive(:available).with(:vim).and_return(["vim"])
-    editor = described_class.new(file, command: :vim)
+    editor = described_class.new(command: :vim)
     allow(editor).to receive(:system).and_return(true)
 
-    expect(editor.open).to eq(true)
+    expect(editor.open(file)).to eq(true)
 
     expect(editor).to have_received(:system).with({}, "vim", file)
   end
@@ -38,10 +42,10 @@ RSpec.describe TTY::Editor, "#open" do
     text = "some text"
     allow(::File).to receive(:write).with(file, text)
     allow(described_class).to receive(:available).with(:vim).and_return(["vim"])
-    editor = described_class.new(file, content: text, command: :vim)
+    editor = described_class.new(command: :vim)
     allow(editor).to receive(:system).and_return(true)
 
-    expect(editor.open).to eq(true)
+    expect(editor.open(file, content: text)).to eq(true)
 
     expect(editor).to have_received(:system).with({}, "vim", file)
   end
@@ -49,10 +53,10 @@ RSpec.describe TTY::Editor, "#open" do
   it "opens an existing file" do
     file = fixtures_path("content.txt")
     allow(described_class).to receive(:available).with(:vim).and_return(["vim"])
-    editor = described_class.new(file, command: :vim)
+    editor = described_class.new(command: :vim)
     allow(editor).to receive(:system).and_return(true)
 
-    expect(editor.open).to eq(true)
+    expect(editor.open(file)).to eq(true)
 
     expect(editor).to have_received(:system).with({}, "vim", file)
   end
@@ -62,10 +66,10 @@ RSpec.describe TTY::Editor, "#open" do
     allow(tempfile).to receive(:path).and_return("tmp-editor-path")
     allow(Tempfile).to receive(:new).and_return(tempfile)
     allow(described_class).to receive(:available).with(:vim).and_return(["vim"])
-    editor = described_class.new(content: "some text", command: :vim)
+    editor = described_class.new(command: :vim)
     allow(editor).to receive(:system).and_return(true)
 
-    expect(editor.open).to eq(true)
+    expect(editor.open(content: "some text")).to eq(true)
 
     expect(editor).to have_received(:system).with({}, "vim", "tmp-editor-path")
     expect(tempfile).to have_received(:<<).with("some text")
@@ -82,19 +86,19 @@ RSpec.describe TTY::Editor, "#open" do
   end
 
   it "forwards class-level open arguments to initializer" do
-    invocable = double(:invocable, open: nil)
-    allow(described_class).to receive(:new).
-      with("hello.rb", command: :vim).and_return(invocable)
+    editor = spy(:editor)
+    allow(described_class).to receive(:new).with(command: :vim).and_return(editor)
 
     described_class.open("hello.rb", command: :vim)
 
-    expect(described_class).to have_received(:new).with("hello.rb", command: :vim)
+    expect(described_class).to have_received(:new).with(command: :vim)
+    expect(editor).to have_received(:open).with("hello.rb", {content: nil})
   end
 
   it "fails to open editor with unknown command" do
     allow(described_class).to receive(:available).with(:unknown).and_return(["unknown"])
     expect {
-      TTY::Editor.open(fixtures_path("content.txt"), command: :unknown)
+      described_class.open(fixtures_path("content.txt"), command: :unknown)
     }.to raise_error(TTY::Editor::CommandInvocationError)
   end
 end
