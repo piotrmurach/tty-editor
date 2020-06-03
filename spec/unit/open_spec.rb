@@ -86,8 +86,10 @@ RSpec.describe TTY::Editor, "#open" do
   end
 
   it "forwards class-level open arguments to initializer" do
+    allow(described_class).to receive(:available).with(:vim).and_return(["vim"])
     editor = spy(:editor)
     allow(described_class).to receive(:new).with(command: :vim).and_return(editor)
+    allow(editor).to receive(:system).and_return(true)
 
     described_class.open("hello.rb", command: :vim)
 

@@ -4,7 +4,7 @@ RSpec.describe TTY::Editor, "#command" do
   it "specifies desired editor with keyword argument" do
     allow(described_class).to receive(:available).with(:vim).and_return(["vim"])
 
-    editor = TTY::Editor.new(command: :vim)
+    editor = described_class.new(command: :vim)
 
     expect(editor.command).to eq("vim")
   end
@@ -14,7 +14,7 @@ RSpec.describe TTY::Editor, "#command" do
     allow(ENV).to receive(:[]).with("EDITOR").and_return("ed -f")
     allow(described_class).to receive(:exist?).with("ed").and_return(true)
 
-    editor = TTY::Editor.new
+    editor = described_class.new
 
     expect(editor.command).to eq("ed -f")
   end
