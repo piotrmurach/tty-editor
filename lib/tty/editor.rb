@@ -176,22 +176,14 @@ module TTY
     #
     # @api private
     def open(filename = nil, content: nil)
+      validate_arguments(filename, content)
       @filename = filename
-      @tempfile = nil
 
-      if !filename.nil?
-        if ::File.exist?(filename) && !content.nil?
-          raise InvalidArgumentError,
-                "cannot give a path to an existing file and text at the same time."
-        elsif ::File.exist?(filename) && !::FileTest.file?(filename)
-          raise InvalidArgumentError, "don't know how to handle `#{filename}`. " \
-                                      "Please provide a file path or text"
-        elsif !::File.exist?(filename)
-          ::File.write(filename, content || "")
-        end
+      if !filename.nil? && !::File.exist?(filename)
+        ::File.write(filename, content || "")
       elsif !content.nil?
-        @tempfile = create_tempfile(content)
-        @filename = @tempfile.path
+        tempfile = create_tempfile(content)
+        @filename = tempfile.path
       end
 
       status = system(env, *Shellwords.split(command_path))
@@ -199,10 +191,27 @@ module TTY
       raise CommandInvocationError,
             "`#{command_path}` failed with status: #{$? ? $?.exitstatus : nil}"
     ensure
-      @tempfile.unlink if @tempfile
+      tempfile.unlink if tempfile
     end
 
     private
+
+    # Check if filename and content arguments are valid
+    #
+    # @raise [InvalidArgumentError]
+    #
+    # @api private
+    def validate_arguments(filename, content)
+      return if filename.nil?
+
+      if ::File.exist?(filename) && !content.nil?
+        raise InvalidArgumentError,
+              "cannot give a path to an existing file and text at the same time."
+      elsif ::File.exist?(filename) && !::FileTest.file?(filename)
+        raise InvalidArgumentError, "don't know how to handle `#{filename}`. " \
+                                    "Please provide a file path or text"
+      end
+    end
 
     # Create tempfile with content
     #
