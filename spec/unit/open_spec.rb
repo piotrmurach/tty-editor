@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-require "fileutils"
-
 RSpec.describe TTY::Editor, "#open" do
   it "fails to open an existing file with text parameter" do
+    allow(described_class).to receive(:available).and_return(["vim"])
     file = fixtures_path("content.txt")
-
     editor = described_class.new
 
     expect {
@@ -16,6 +14,7 @@ RSpec.describe TTY::Editor, "#open" do
   end
 
   it "fails to open non-file" do
+    allow(described_class).to receive(:available).and_return(["vim"])
     editor = described_class.new
 
     expect {
@@ -86,10 +85,8 @@ RSpec.describe TTY::Editor, "#open" do
   end
 
   it "forwards class-level open arguments to initializer" do
-    allow(described_class).to receive(:available).with(:vim).and_return(["vim"])
     editor = spy(:editor)
     allow(described_class).to receive(:new).with(command: :vim).and_return(editor)
-    allow(editor).to receive(:system).and_return(true)
 
     described_class.open("hello.rb", command: :vim)
 
