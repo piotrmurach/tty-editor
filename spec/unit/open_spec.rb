@@ -7,7 +7,7 @@ RSpec.describe TTY::Editor, "#open" do
     editor = described_class.new
 
     expect {
-      editor.open(file, content: "some text")
+      editor.open(file, text: "some text")
     }.to raise_error(TTY::Editor::InvalidArgumentError,
                      "cannot give a path to an existing file and " \
                      "text at the same time.")
@@ -44,7 +44,7 @@ RSpec.describe TTY::Editor, "#open" do
     editor = described_class.new(command: :vim)
     allow(editor).to receive(:system).and_return(true)
 
-    expect(editor.open(file, content: text)).to eq(true)
+    expect(editor.open(file, text: text)).to eq(true)
 
     expect(editor).to have_received(:system).with({}, "vim", file)
   end
@@ -60,7 +60,7 @@ RSpec.describe TTY::Editor, "#open" do
     expect(editor).to have_received(:system).with({}, "vim", file)
   end
 
-  it "opens content in a temp file" do
+  it "opens text in a temp file" do
     tempfile = spy
     allow(tempfile).to receive(:path).and_return("tmp-editor-path")
     allow(Tempfile).to receive(:new).and_return(tempfile)
@@ -68,14 +68,14 @@ RSpec.describe TTY::Editor, "#open" do
     editor = described_class.new(command: :vim)
     allow(editor).to receive(:system).and_return(true)
 
-    expect(editor.open(content: "some text")).to eq(true)
+    expect(editor.open(text: "some text")).to eq(true)
 
     expect(editor).to have_received(:system).with({}, "vim", "tmp-editor-path")
     expect(tempfile).to have_received(:<<).with("some text")
     expect(tempfile).to have_received(:unlink)
   end
 
-  it "opens editor without filename or content" do
+  it "opens editor without filename or text" do
     allow(described_class).to receive(:available).with(:vim).and_return(["vim"])
     editor = described_class.new(command: :vim)
     allow(editor).to receive(:system).and_return(true)
@@ -91,7 +91,7 @@ RSpec.describe TTY::Editor, "#open" do
     described_class.open("hello.rb", command: :vim)
 
     expect(described_class).to have_received(:new).with(command: :vim)
-    expect(editor).to have_received(:open).with("hello.rb", {content: nil})
+    expect(editor).to have_received(:open).with("hello.rb", {text: nil})
   end
 
   it "fails to open editor with unknown command" do

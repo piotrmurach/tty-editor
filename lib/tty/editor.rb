@@ -89,20 +89,20 @@ module TTY
     #   the name of the file
     # @param [String] :command
     #   the editor command to use, by default auto detects
-    # @param [String] :contet
-    #   the content to edit
+    # @param [String] :text
+    #   the text to edit in an editor
     # @param [Hash] :env
     #   environment variables to forward to the editor
     #
     # @return [Object]
     #
     # @api public
-    def self.open(filename = nil, content: nil, **options)
+    def self.open(filename = nil, text: nil, **options)
       editor = new(**options)
 
       yield(editor) if block_given?
 
-      editor.open(filename, content: content)
+      editor.open(filename, text: text)
     end
 
     # Initialize an Editor
@@ -160,19 +160,20 @@ module TTY
     # Run editor command in a shell
     #
     # @param [String] filenmame
-    # @param [String] :contet
-    #   the content to edit
+    #   the path to file
+    # @param [String] :text
+    #   the text to edit in an editor
     #
     # @raise [TTY::CommandInvocationError]
     #
     # @api private
-    def open(filename = nil, content: nil)
-      validate_arguments(filename, content)
+    def open(filename = nil, text: nil)
+      validate_arguments(filename, text)
 
       if !filename.nil? && !::File.exist?(filename)
-        ::File.write(filename, content || "")
-      elsif !content.nil?
-        tempfile = create_tempfile(content)
+        ::File.write(filename, text || "")
+      elsif !text.nil?
+        tempfile = create_tempfile(text)
         filename = tempfile.path
       end
 
@@ -188,15 +189,15 @@ module TTY
 
     private
 
-    # Check if filename and content arguments are valid
+    # Check if filename and text arguments are valid
     #
     # @raise [InvalidArgumentError]
     #
     # @api private
-    def validate_arguments(filename, content)
+    def validate_arguments(filename, text)
       return if filename.nil?
 
-      if ::File.exist?(filename) && !content.nil?
+      if ::File.exist?(filename) && !text.nil?
         raise InvalidArgumentError,
               "cannot give a path to an existing file and text at the same time."
       elsif ::File.exist?(filename) && !::FileTest.file?(filename)
@@ -205,16 +206,16 @@ module TTY
       end
     end
 
-    # Create tempfile with content
+    # Create tempfile with text
     #
-    # @param [String] content
+    # @param [String] text
     #
     # @return [Tempfile]
     #
     # @api private
-    def create_tempfile(content)
+    def create_tempfile(text)
       tempfile = Tempfile.new("tty-editor")
-      tempfile << content
+      tempfile << text
       tempfile.flush
       tempfile.close
       tempfile

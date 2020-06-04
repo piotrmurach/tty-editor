@@ -14,7 +14,7 @@ RSpec.describe TTY::Editor do
     status = nil
 
     expect {
-      status = described_class.open(content: "Some text", command: editor_command)
+      status = described_class.open(text: "Some text", command: editor_command)
     }.to output(/Some text/).to_stdout_from_any_process
     expect(status).to eq(true)
   end
@@ -44,7 +44,7 @@ RSpec.describe TTY::Editor do
     status = nil
 
     expect {
-      status = described_class.open("newfile.txt", content: "Some text",
+      status = described_class.open("newfile.txt", text: "Some text",
                                     command: editor_command)
     }.to output(/Some text/).to_stdout_from_any_process
 
