@@ -39,31 +39,84 @@ Or install it yourself as:
 
     $ gem install tty-editor
 
-## Usage
+## Contents
 
-To edit a file in default editor:
+* [1. Usage](#1-usage)
+* [2. API](#2-api)
+  * [2.1 new](#21-new)
+    * [2.1.1 :command](#211-command)
+    * [2.1.2 :env](#212-env)
+  * [2.2 open](#22-open)
 
-```ruby
-TTY::Editor.open('hello.rb')
-```
+## 1. Usage
 
-To edit content in a default editor:
-
-```ruby
-TTY::Editor.open(content: "some text")
-```
-
-You can also set your preferred editor command:
+To edit a file in a default text editor do:
 
 ```ruby
-TTY::Editor.open('hello.rb', command: :vim)
+TTY::Editor.open("/path/to/file")
 ```
 
-Also, the `VISUAL` or `EDITOR` shell environment variables take precedence when auto detecting available editors.
+To edit text in a default editor:
 
-## Interface
+```ruby
+TTY::Editor.open(text: "Some text")
+```
 
-### open
+You can also set your preferred editor command(s):
+
+```ruby
+TTY::Editor.open("/path/to/file", command: "vim -f")
+```
+
+Note that the `VISUAL` or `EDITOR` shell environment variables take precedence when auto detecting available editors.
+
+## 2. API
+
+### 2.1 new
+
+Instantiation of an editor will trigger automatic search for available command-line editors:
+
+```ruby
+editor = TTY::Editor.new
+```
+
+You can change default search with the `:command` keyword argument.
+
+#### 2.1.1 :command
+
+You can force to always use a specific editor by passing `:command` option:
+
+```ruby
+editor = TTY::Editor.new(command: "vim")
+```
+
+Or you can specify multiple commands and give a user a choice:
+
+```ruby
+editor = TTY::Editor.new(command: ["vim", "emacs"])
+```
+
+The class-level `open` method accepts the same parameters:
+
+```ruby
+TTY::Editor.open("/path/to/file", command: "vim")
+```
+
+#### 2.1.2 :env
+
+Use `:env` key to forward environment variables to the text editor launch command:
+
+```ruby
+TTY::Editor.new(env: {"FOO" => "bar"})
+```
+
+The class-level `open` method accepts the same parameters:
+
+```ruby
+TTY::Editor.open("/path/to/file", env: {"FOO" => "bar"})
+```
+
+### 2.2 open
 
 If you wish to open editor with no file or content do:
 
@@ -74,7 +127,7 @@ TTY::Editor.open
 To open a file at a path pass it as a first argument:
 
 ```ruby
-TTY::Editor.open('../README.md')
+TTY::Editor.open("../README.md")
 ```
 
 When editor successfully opens file or content then `true` is returned.
@@ -84,40 +137,16 @@ If the editor cannot be opened, a `TTY::Editor::CommandInvocation` error is rais
 In order to open text content inside an editor do:
 
 ```ruby
-TTY::Editor.open(content: 'text')
+TTY::Editor.open(text: "Some text")
 ```
 
 You can also provide filename that will be created with specified content before editor is opened:
 
 ```ruby
-TTY::Editor.open('new.rb', content: 'text')
+TTY::Editor.open("/path/to/new-file', text: "Some text")
 ```
 
 If you open a filename with already existing content then new content gets appended at the end of the file.
-
-### :env
-
-Use `:env` key to forward environment variables to  the editor.
-
-```ruby
-TTY::Editor.open('hello.rb', env: {"FOO" => "bar"})
-```
-
-### :command
-
-You can force to always use a specific editor by passing `:command` option:
-
-```ruby
-TTY::Editor.open('hello.rb', command: :vim)
-```
-
-To specify more than one command, and hence give a user a choice do:
-
-```ruby
-TTY::Editor.open('hello.rb') do |editor|
-  editor.command :vim, :emacs
-end
-```
 
 ## Development
 
