@@ -174,6 +174,9 @@ module TTY
     #
     # @raise [TTY::CommandInvocationError]
     #
+    # @return [Boolean]
+    #   whether editor command suceeded or not
+    #
     # @api private
     def open(*files, text: nil)
       validate_arguments(files, text)
@@ -192,6 +195,23 @@ module TTY
         filepaths << tempfile.path
       end
 
+      run(filepaths)
+    ensure
+      tempfile.unlink if tempfile
+    end
+
+    private
+
+    # Run editor command with file arguments
+    #
+    # @param [Array<String>] filepaths
+    #   the file paths to open in an editor
+    #
+    # @return [Boolean]
+    #   whether command succeeded or not
+    #
+    # @api private
+    def run(filepaths)
       command_path = "#{command} #{filepaths.shelljoin}"
       status = system(env, *Shellwords.split(command_path))
       if @raise_on_failure && !status
@@ -199,11 +219,7 @@ module TTY
               "`#{command_path}` failed with status: #{$? ? $?.exitstatus : nil}"
       end
       !!status
-    ensure
-      tempfile.unlink if tempfile
     end
-
-    private
 
     # Check if filename and text arguments are valid
     #
