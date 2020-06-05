@@ -123,11 +123,13 @@ module TTY
     #   the standard output
     #
     # @api public
-    def initialize(command: nil, env: {}, input: $stdin, output: $stdout)
+    def initialize(command: nil, raise_on_failure: false,
+                   env: {}, input: $stdin, output: $stdout)
       @env      = env
       @command  = nil
       @input    = input
       @output   = output
+      @raise_on_failure = raise_on_failure
 
       command(*Array(command))
     end
@@ -192,9 +194,11 @@ module TTY
 
       command_path = "#{command} #{filepaths.shelljoin}"
       status = system(env, *Shellwords.split(command_path))
-      return status if status
-      raise CommandInvocationError,
-            "`#{command_path}` failed with status: #{$? ? $?.exitstatus : nil}"
+      if @raise_on_failure && !status
+        raise CommandInvocationError,
+              "`#{command_path}` failed with status: #{$? ? $?.exitstatus : nil}"
+      end
+      !!status
     ensure
       tempfile.unlink if tempfile
     end
