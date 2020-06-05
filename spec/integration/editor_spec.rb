@@ -52,6 +52,40 @@ RSpec.describe TTY::Editor do
     expect(::File.read("newfile.txt")).to eq("Some text")
   end
 
+  it "opens multiple existing files in an editor" do
+    editor_command = "ruby #{fixtures_path("echo.rb")}"
+    text_file = fixtures_path("content.txt")
+    cat_file = fixtures_path("cat.rb")
+
+    expect {
+      described_class.open(text_file, cat_file, command: editor_command)
+    }.to output(/#{text_file} #{cat_file}/).to_stdout_from_any_process
+  end
+
+  it "opens multiple files, existing and new, in an editor" do
+    editor_command = "ruby #{fixtures_path("echo.rb")}"
+    text_file = fixtures_path("content.txt")
+
+    expect {
+      described_class.open(text_file, "newfile.txt", command: editor_command)
+    }.to output(/#{text_file} newfile\.txt/).to_stdout_from_any_process
+
+    expect(::File.read(text_file)).to eq("one\ntwo\nthree\n")
+    expect(::File.read("newfile.txt")).to eq("")
+  end
+
+  it "opens multiple new files with a text in an editor" do
+    editor_command = "ruby #{fixtures_path("echo.rb")}"
+
+    expect {
+      described_class.open("newfile1.txt", "newfile2.txt", text: "Some text",
+                           command: editor_command)
+    }.to output(/newfile1\.txt newfile2\.txt/).to_stdout_from_any_process
+
+    expect(::File.read("newfile1.txt")).to eq("Some text")
+    expect(::File.read("newfile2.txt")).to eq("Some text")
+  end
+
   it "shows an editor choice menu and selects second option" do
     file = fixtures_path("content.txt")
     cat = "ruby #{fixtures_path("cat.rb")}"

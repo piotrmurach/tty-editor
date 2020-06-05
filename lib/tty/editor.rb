@@ -85,8 +85,14 @@ module TTY
     # @example
     #   TTY::Editor.open("/path/to/filename")
     #
-    # @param [String] filename
-    #   the name of the file
+    # @example
+    #   TTY::Editor.open("file1", "file2", "file3")
+    #
+    # @example
+    #   TTY::Editor.open(text: "Some text")
+    #
+    # @param [Array<String>] files
+    #   the files to open in an editor
     # @param [String] :command
     #   the editor command to use, by default auto detects
     # @param [String] :text
@@ -97,12 +103,12 @@ module TTY
     # @return [Object]
     #
     # @api public
-    def self.open(filename = nil, text: nil, **options)
+    def self.open(*files, text: nil, **options)
       editor = new(**options)
 
       yield(editor) if block_given?
 
-      editor.open(filename, text: text)
+      editor.open(*files, text: text)
     end
 
     # Initialize an Editor
@@ -159,26 +165,32 @@ module TTY
 
     # Run editor command in a shell
     #
-    # @param [String] filenmame
-    #   the path to file
+    # @param [Array<String>] files
+    #   the files to open in an editor
     # @param [String] :text
     #   the text to edit in an editor
     #
     # @raise [TTY::CommandInvocationError]
     #
     # @api private
-    def open(filename = nil, text: nil)
-      validate_arguments(filename, text)
+    def open(*files, text: nil)
+      validate_arguments(files, text)
+      text_written = false
 
-      if !filename.nil? && !::File.exist?(filename)
-        ::File.write(filename, text || "")
-      elsif !text.nil?
-        tempfile = create_tempfile(text)
-        filename = tempfile.path
+      filepaths = files.reduce([]) do |paths, filename|
+        if !::File.exist?(filename)
+          ::File.write(filename, text || "")
+          text_written = true
+        end
+        paths + [filename]
       end
 
-      escaped_file = Shellwords.shellescape(filename)
-      command_path = "#{command} #{escaped_file}"
+      if !text.nil? && !text_written
+        tempfile = create_tempfile(text)
+        filepaths << tempfile.path
+      end
+
+      command_path = "#{command} #{filepaths.shelljoin}"
       status = system(env, *Shellwords.split(command_path))
       return status if status
       raise CommandInvocationError,
@@ -194,13 +206,13 @@ module TTY
     # @raise [InvalidArgumentError]
     #
     # @api private
-    def validate_arguments(filename, text)
-      return if filename.nil?
+    def validate_arguments(files, text)
+      return if files.empty?
 
-      if ::File.exist?(filename) && !text.nil?
+      if files.all? { |file| ::File.exist?(file) } && !text.nil?
         raise InvalidArgumentError,
               "cannot give a path to an existing file and text at the same time."
-      elsif ::File.exist?(filename) && !::FileTest.file?(filename)
+      elsif filename = files.find { |file| ::File.exist?(file) && !::FileTest.file?(file) }
         raise InvalidArgumentError, "don't know how to handle `#{filename}`. " \
                                     "Please provide a file path or text"
       end

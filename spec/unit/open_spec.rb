@@ -81,7 +81,7 @@ RSpec.describe TTY::Editor, "#open" do
     allow(editor).to receive(:system).and_return(true)
 
     expect(editor.open).to eq(true)
-    expect(editor).to have_received(:system).with({}, "vim", "")
+    expect(editor).to have_received(:system).with({}, "vim")
   end
 
   it "forwards class-level open arguments to initializer" do
