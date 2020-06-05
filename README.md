@@ -46,6 +46,7 @@ Or install it yourself as:
   * [2.1 new](#21-new)
     * [2.1.1 :command](#211-command)
     * [2.1.2 :env](#212-env)
+    * [2.1.3 :raise_on_failure](#213-raise_on_failure)
   * [2.2 open](#22-open)
 
 ## 1. Usage
@@ -116,6 +117,22 @@ The class-level `open` method accepts the same parameters:
 TTY::Editor.open("/path/to/file", env: {"FOO" => "bar"})
 ```
 
+#### 2.1.3 :raise_on_failure
+
+By default when editor fails to open a `false` status is returned:
+
+```ruby
+TTY::Editor.open("/path/to/unknown/file") # => false
+```
+
+By using `:raise_on_failure`, you can raise `TTY::Editor::CommandInvocationError`:
+
+```
+editor = TTY::Editor.new(raise_on_failure: true)
+editor.open("/path/to/unknown/file")
+# => raises TTY::Editor::ComandInvocationError
+```
+
 ### 2.2 open
 
 If you wish to open editor with no file or content do:
@@ -128,11 +145,10 @@ To open a file at a path pass it as a first argument:
 
 ```ruby
 TTY::Editor.open("../README.md")
+# => true
 ```
 
-When editor successfully opens file or content then `true` is returned.
-
-If the editor cannot be opened, a `TTY::Editor::CommandInvocation` error is raised.
+When editor successfully opens file or content then `true` is returned, `false` otherwise. You can change this with `:raise_on_failure` keyword to raise a `TTY::Editor::CommandInvocation` error when an editor cannot be opened.
 
 In order to open text content inside an editor do:
 
