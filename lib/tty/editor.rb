@@ -30,7 +30,7 @@ module TTY
     # @api public
     EXECUTABLES = [
       "nano -w", "notepad", "vim", "vi", "emacs",
-      "subl -n -w", "mate -w", "atom",
+      "code", "subl -n -w", "mate -w", "atom",
       "pico", "qe", "mg", "jed"
     ].freeze
 

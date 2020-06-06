@@ -4,7 +4,7 @@ RSpec.describe TTY::Editor do
   it "includes default editor execs" do
     expect(TTY::Editor::EXECUTABLES).to eq([
       "nano -w", "notepad", "vim", "vi", "emacs",
-      "subl -n -w", "mate -w", "atom",
+      "code", "subl -n -w", "mate -w", "atom",
       "pico", "qe", "mg", "jed"
     ])
   end
