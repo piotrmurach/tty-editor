@@ -2,9 +2,18 @@
 
 ## [v0.6.0] - 2020-06-xx
 
+### Added
+* Add ability to edit multiple files
+* Add ability to configure input and output
+* Add :raise_on_failure configuration option to control editor failure to run
+* Add :show_menu configuration option to disable editor menu choice
+
 ### Changed
+* Change Editor#exist? to use direct path env var search
+* Change Editor#new to stop accepting filename and text arguments
+* Change Editor#new to select available text editors
 * Change Editor#open to accept keyword arguments
-* Change Editor#exist? with direct path env var search
+* Change to stop raising when editor command cannot be run and return false instead
 * Remove tty-which dependency
 
 ### Fixed
