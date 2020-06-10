@@ -49,6 +49,16 @@ RSpec.describe TTY::Editor, "#command" do
     expect(editor.command).to eq("vim")
   end
 
+  it "doesn't show menu choice when disabled" do
+    allow(described_class).to receive(:available).and_return(["vim", "emacs"])
+    allow(TTY::Prompt).to receive(:new)
+
+    editor = described_class.new(show_menu: false)
+
+    expect(editor.command).to eq("vim")
+    expect(TTY::Prompt).to_not have_received(:new)
+  end
+
   it "caches editor name" do
     allow(described_class).to receive(:available).and_return(["vim"])
     editor = described_class.new

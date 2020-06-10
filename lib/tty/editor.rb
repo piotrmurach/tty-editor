@@ -121,15 +121,20 @@ module TTY
     #   the standard input
     # @param [IO] :output
     #   the standard output
+    # @param [Boolean] :raise_on_failure
+    #   whether or not raise on command failure, false by default
+    # @param [Boolean] :show_menu
+    #   whether or not show commands menu, true by default
     #
     # @api public
-    def initialize(command: nil, raise_on_failure: false,
+    def initialize(command: nil, raise_on_failure: false, show_menu: true,
                    env: {}, input: $stdin, output: $stdout)
-      @env      = env
-      @command  = nil
-      @input    = input
-      @output   = output
+      @env = env
+      @command = nil
+      @input = input
+      @output = output
       @raise_on_failure = raise_on_failure
+      @show_menu = show_menu
 
       command(*Array(command))
     end
@@ -260,7 +265,7 @@ module TTY
     #
     # @api private
     def choose_exec_from(execs)
-      if execs.size > 1
+      if @show_menu && execs.size > 1
         prompt = TTY::Prompt.new(input: @input, output: @output, env: @env)
         exec = prompt.enum_select("Select an editor?", execs)
         @output.print(prompt.cursor.up + prompt.cursor.clear_line)
