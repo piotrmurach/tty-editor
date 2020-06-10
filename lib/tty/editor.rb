@@ -70,7 +70,7 @@ module TTY
     # @api public
     def self.available(*commands)
       execs = if !commands.empty?
-                commands
+                commands.map(&:to_s)
               elsif from_env.any?
                 [from_env.first]
               else

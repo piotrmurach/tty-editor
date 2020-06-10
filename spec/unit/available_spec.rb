@@ -55,4 +55,10 @@ RSpec.describe TTY::Editor, ".available" do
 
     expect(described_class.available("custom")).to eql(["custom"])
   end
+
+  it "sets custom editor commands with symbols" do
+    allow(described_class).to receive(:exist?).and_return(true)
+
+    expect(described_class.available(:vim, :emacs)).to eql(%w[vim emacs])
+  end
 end
