@@ -22,14 +22,21 @@ module Helpers
   def fixtures_path(filename = nil)
     ::File.join(::File.dirname(__FILE__), "fixtures", filename.to_s)
   end
+end
 
-  def tmp_path(filename = nil)
-    File.join(File.dirname(__FILE__), "..", "tmp", filename.to_s)
+RSpec.shared_context "sandbox" do
+  around(:each) do |example|
+    ::Dir.mktmpdir do |dir|
+      ::FileUtils.cp_r(fixtures_path("/."), dir)
+      ::Dir.chdir(dir, &example)
+    end
   end
 end
 
 RSpec.configure do |config|
   config.include(Helpers)
+  config.include_context "sandbox", type: :sandbox
+
   config.expect_with :rspec do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
     expectations.max_formatted_output_length = nil

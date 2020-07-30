@@ -1,14 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe TTY::Editor do
-  around :each do |example|
-    Dir.mktmpdir do |dir|
-      FileUtils.cd(dir) do
-        example.run
-      end
-    end
-  end
-
+RSpec.describe TTY::Editor, type: :sandbox do
   it "opens text in an editor" do
     editor_command = "ruby #{fixtures_path("cat.rb")}"
     status = nil
