@@ -1,6 +1,6 @@
 # Change log
 
-## [v0.6.0] - 2020-06-xx
+## [v0.6.0] - unreleased
 
 ### Added
 * Add ability to edit multiple files
@@ -15,6 +15,7 @@
 * Change Editor#open to accept keyword arguments
 * Change to stop raising when editor command cannot be run and return false instead
 * Remove tty-which dependency
+* Update tty-prompt dependency
 
 ### Fixed
 * Fix to allow setting editor commands with flags
