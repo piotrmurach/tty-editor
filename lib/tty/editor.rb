@@ -143,9 +143,12 @@ module TTY
 
     # Read or update environment vars
     #
+    # @return [Hash]
+    #
     # @api public
     def env(value = (not_set = true))
       return @env if not_set
+
       @env = value
     end
 
