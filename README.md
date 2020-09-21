@@ -47,6 +47,7 @@ Or install it yourself as:
     * [2.1.1 :command](#211-command)
     * [2.1.2 :env](#212-env)
     * [2.1.3 :raise_on_failure](#213-raise_on_failure)
+    * [2.1.4 :prompt](#214-prompt)
   * [2.2 open](#22-open)
 
 ## 1. Usage
@@ -63,13 +64,33 @@ To edit text in a default editor:
 TTY::Editor.open(text: "Some text")
 ```
 
-You can also set your preferred editor command(s):
+You can also open multiple existing and/or new files:
+
+```ruby
+TTY::Editor.open("file_1", "file_2", "new_file_3")
+```
+
+Note that the `VISUAL` or `EDITOR` shell environment variables take precedence when auto detecting available editors.
+
+You can also set your preferred editor command(s) and ignore `VISUAL` and `EDITOR` as well as other user preferences:
 
 ```ruby
 TTY::Editor.open("/path/to/file", command: "vim -f")
 ```
 
-Note that the `VISUAL` or `EDITOR` shell environment variables take precedence when auto detecting available editors.
+When `VISUAL` or `EDITOR` are not specified, a selection menu will be presented to the user.
+
+For example, if an user has `vim`, `emacs` and `code` editors available on their system, they will see the following menu:
+
+```ruby
+Select an editor?
+  1) vim
+  2) emacs
+  3) code
+  Choose 1-2 [1]:
+```
+
+You can further customise this behaviour with [:prompt](#214-prompt).
 
 ## 2. API
 
@@ -133,6 +154,37 @@ The `TTY::Editor::CommandInvocationError` will be raised anytime an editor fails
 editor = TTY::Editor.new(raise_on_failure: true)
 editor.open("/path/to/unknown/file")
 # => raises TTY::Editor::ComandInvocationError
+```
+
+#### 2.1.4 :prompt
+
+When more than one editor is available and user hasn't specified their preferred choice via `VISUAL` or `EDITOR` variables, a selection menu is presented.
+
+For example, when `vim`, `emacs` and `code` executable exists on the system, the following menu will be displayed:
+
+```ruby
+Select an editor?
+  1) vim
+  2) emacs
+  3) code
+  Choose 1-2 [1]:
+```
+
+If you would like to change the menu prompt use `:prompt` keyword:
+
+```ruby
+editor = TTY::Editor.new(prompt: "Which one do you fancy?")
+editor.open("/path/to/file")
+```
+
+This may produce the following:
+
+```ruby
+Which one do you fancy?
+  1) vim
+  2) emacs
+  3) code
+  Choose 1-2 [1]:
 ```
 
 ### 2.2 open
