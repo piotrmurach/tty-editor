@@ -1,5 +1,5 @@
 <div align="center">
-  <a href="https://piotrmurach.github.io/tty" target="_blank"><img width="130" src="https://cdn.rawgit.com/piotrmurach/tty/master/images/tty.png" alt="tty logo" /></a>
+  <a href="https://ttytoolkit.org" target="_blank"><img width="130" src="https://github.com/piotrmurach/tty/raw/master/images/tty.png" alt="TTY Toolkit logo" /></a>
 </div>
 
 # TTY::Editor [![Gitter](https://badges.gitter.im/Join%20Chat.svg)][gitter]
@@ -28,7 +28,7 @@
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'tty-editor'
+gem "tty-editor"
 ```
 
 And then execute:
@@ -125,9 +125,11 @@ By default when editor fails to open a `false` status is returned:
 TTY::Editor.open("/path/to/unknown/file") # => false
 ```
 
-By using `:raise_on_failure`, you can raise `TTY::Editor::CommandInvocationError`:
+Alternatively, you can use `:raise_on_failure` to raise an error on failure to open a file.
 
-```
+The `TTY::Editor::CommandInvocationError` will be raised anytime an editor fails to open a file:
+
+```ruby
 editor = TTY::Editor.new(raise_on_failure: true)
 editor.open("/path/to/unknown/file")
 # => raises TTY::Editor::ComandInvocationError
@@ -135,22 +137,24 @@ editor.open("/path/to/unknown/file")
 
 ### 2.2 open
 
-If you wish to open editor with no file or content do:
+If you wish to open only an editor without giving a file or content do:
 
 ```ruby
 TTY::Editor.open
 ```
 
-To open a file at a path pass it as a first argument:
+To open a file, pass a path as a first argument to `open`:
 
 ```ruby
 TTY::Editor.open("../README.md")
 # => true
 ```
 
-When editor successfully opens file or content then `true` is returned, `false` otherwise. You can change this with `:raise_on_failure` keyword to raise a `TTY::Editor::CommandInvocation` error when an editor cannot be opened.
+When editor successfully opens a file or content then `true` is returned, `false` otherwise.
 
-In order to open text content inside an editor do:
+You can change this with `:raise_on_failure` keyword to raise a `TTY::Editor::CommandInvocation` error when an editor cannot be opened.
+
+In order to open text content inside an editor use `:text` keyword like so:
 
 ```ruby
 TTY::Editor.open(text: "Some text")
@@ -159,10 +163,10 @@ TTY::Editor.open(text: "Some text")
 You can also provide filename that will be created with specified content before editor is opened:
 
 ```ruby
-TTY::Editor.open("/path/to/new-file', text: "Some text")
+TTY::Editor.open("/path/to/new-file", text: "Some text")
 ```
 
-If you open a filename with already existing content then new content gets appended at the end of the file.
+If you open a filename with already existing content then new content will be appended at the end of the file.
 
 ## Development
 
