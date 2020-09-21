@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["piotr@piotrmurach.com"]
   spec.summary       = %q{Open a file or text in a terminal text editor.}
   spec.description   = %q{Open a file or text in a terminal text editor.}
-  spec.homepage      = "https://piotrmurach.github.io/tty"
+  spec.homepage      = "https://ttytoolkit.org"
   spec.license       = "MIT"
 
   spec.metadata["allowed_push_host"] = "https://rubygems.org"
@@ -24,7 +24,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
   spec.required_ruby_version = Gem::Requirement.new(">= 2.0.0")
 
-  spec.add_dependency "tty-prompt",   "~> 0.21"
+  spec.add_dependency "tty-prompt", "~> 0.22"
 
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec", "~> 3.0"
