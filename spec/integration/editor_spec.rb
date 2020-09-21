@@ -115,4 +115,37 @@ RSpec.describe TTY::Editor, type: :sandbox do
     expect(output.string).to eq(expected_output)
     expect(status).to eq(true)
   end
+
+  it "shows a choice menu with a custom prompt and selects the default editor" do
+    file = fixtures_path("content.txt")
+    cat = "ruby #{fixtures_path("cat.rb")}"
+    echo = "ruby #{fixtures_path("echo.rb")}"
+    status = nil
+    input = StringIO.new
+    output = StringIO.new
+
+    expected_output = [
+      "Which one do you fancy? \n",
+      "  \e[32m1) #{cat}\e[0m\n",
+      "  2) #{echo}\n",
+      "  Choose 1-2 [1]: ",
+      "\e[2K\e[1G\e[1A" * 3,
+      "\e[2K\e[1G\e[J",
+      "Which one do you fancy? \e[32m#{cat}\e[0m\n",
+      "\e[1A\e[2K\e[1G",
+    ].join
+
+    expect {
+      input << "\n"
+      input.rewind
+
+      editor = described_class.new(command: [cat, echo], input: input,
+                                   prompt: "Which one do you fancy?",
+                                   output: output, env: {"TTY_TEST" => "true"})
+      status = editor.open(file)
+    }.to output(/one\ntwo\nthree\n/).to_stdout_from_any_process
+
+    expect(output.string).to eq(expected_output)
+    expect(status).to eq(true)
+  end
 end
