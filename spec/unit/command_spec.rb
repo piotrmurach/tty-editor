@@ -9,6 +9,20 @@ RSpec.describe TTY::Editor, "#command" do
     expect(editor.command).to eq("vim")
   end
 
+  it "specifies desired editor via command method" do
+    allow(ENV).to receive(:[]).with("VISUAL").and_return("emacs")
+    allow(ENV).to receive(:[]).with("EDITOR").and_return("emacs")
+    allow(described_class).to receive(:exist?).and_return(true)
+
+    editor = described_class.new
+
+    expect(editor.command).to eq("emacs")
+
+    editor.command("vim")
+
+    expect(editor.command).to eq("vim")
+  end
+
   it "specifies desired editor via EDITOR env variable" do
     allow(ENV).to receive(:[]).with("VISUAL").and_return(nil)
     allow(ENV).to receive(:[]).with("EDITOR").and_return("ed -f")
