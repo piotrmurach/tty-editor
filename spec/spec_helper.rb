@@ -17,6 +17,7 @@ end
 
 require "tty/editor"
 require "stringio"
+require "tmpdir"
 
 module Helpers
   def fixtures_path(filename = nil)
