@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require "tty-prompt"
-require "tempfile"
 require "fileutils"
 require "shellwords"
+require "tempfile"
+require "tty-prompt"
 
 require_relative "editor/version"
 
