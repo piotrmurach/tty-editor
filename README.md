@@ -82,12 +82,12 @@ When `VISUAL` or `EDITOR` are not specified, a selection menu will be presented 
 
 For example, if an user has `vim`, `emacs` and `code` editors available on their system, they will see the following menu:
 
-```ruby
-Select an editor?
-  1) vim
-  2) emacs
-  3) code
-  Choose 1-2 [1]:
+```
+# Select an editor?
+#   1) vim
+#   2) emacs
+#   3) code
+#   Choose 1-2 [1]:
 ```
 
 You can further customise this behaviour with [:prompt](#214-prompt).
@@ -162,12 +162,12 @@ When more than one editor is available and user hasn't specified their preferred
 
 For example, when `vim`, `emacs` and `code` executable exists on the system, the following menu will be displayed:
 
-```ruby
-Select an editor?
-  1) vim
-  2) emacs
-  3) code
-  Choose 1-2 [1]:
+```
+# Select an editor?
+#   1) vim
+#   2) emacs
+#   3) code
+#   Choose 1-2 [1]:
 ```
 
 If you would like to change the menu prompt use `:prompt` keyword:
@@ -177,14 +177,14 @@ editor = TTY::Editor.new(prompt: "Which one do you fancy?")
 editor.open("/path/to/file")
 ```
 
-This may produce the following:
+This may produce the following in the terminal:
 
-```ruby
-Which one do you fancy?
-  1) vim
-  2) emacs
-  3) code
-  Choose 1-2 [1]:
+```
+# Which one do you fancy?
+#   1) vim
+#   2) emacs
+#   3) code
+#   Choose 1-2 [1]:
 ```
 
 ### 2.2 open
