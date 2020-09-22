@@ -1,1 +1,1 @@
-require_relative 'tty/editor'
+require_relative "tty/editor"
