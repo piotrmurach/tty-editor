@@ -103,11 +103,8 @@ module TTY
     # @return [Object]
     #
     # @api public
-    def self.open(*files, text: nil, **options)
-      editor = new(**options)
-
-      yield(editor) if block_given?
-
+    def self.open(*files, text: nil, **options, &block)
+      editor = new(**options, &block)
       editor.open(*files, text: text)
     end
 
@@ -129,7 +126,7 @@ module TTY
     # @api public
     def initialize(command: nil, raise_on_failure: false, show_menu: true,
                    prompt: "Select an editor?", env: {},
-                   input: $stdin, output: $stdout)
+                   input: $stdin, output: $stdout, &block)
       @env = env
       @command = nil
       @input = input
@@ -137,6 +134,8 @@ module TTY
       @raise_on_failure = raise_on_failure
       @show_menu = show_menu
       @prompt = prompt
+
+      block.(self) if block
 
       command(*Array(command))
     end
