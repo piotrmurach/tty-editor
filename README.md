@@ -189,13 +189,28 @@ This may produce the following in the terminal:
 
 ### 2.2 open
 
-If you wish to open only an editor without giving a file or content do:
+There is a class-level and instance-level `open` method. These are equivalent:
+
+```ruby
+editor = TTY::Editor.new
+editor.open(...)
+# or
+TTY::Editor.open(...)
+```
+
+Creating `TTY::Editor` instance means that the search for a command editor will be performed only once. Then the editor command will be shared between invocations of `open` call.
+
+Conversely, the class-level `open` method will search for an editor each time it is invoked.
+
+The following examples of using the `open` method apply to both the instance and class level invocations.
+
+If you wish to open an editor without giving a file or content do:
 
 ```ruby
 TTY::Editor.open
 ```
 
-To open a file, pass a path as a first argument to `open`:
+To open a file, pass a path as an argument to `open`:
 
 ```ruby
 TTY::Editor.open("../README.md")
@@ -218,7 +233,13 @@ You can also provide filename that will be created with specified content before
 TTY::Editor.open("/path/to/new-file", text: "Some text")
 ```
 
-If you open a filename with already existing content then new content will be appended at the end of the file.
+If you open a filename with already existing content then the new content will be appended at the end of the file.
+
+You can also open multiple existing and non-existing files providing them as consecutive arguments:
+
+```ruby
+TTY::Editor.open("file_1", "file_2", "new_file_3")
+```
 
 ## Development
 
