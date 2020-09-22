@@ -1,12 +1,13 @@
 # Change log
 
-## [v0.6.0] - unreleased
+## [v0.6.0] - 2020-09-22
 
 ### Added
 * Add ability to edit multiple files
 * Add ability to configure input and output
 * Add :raise_on_failure configuration option to control editor failure to run
 * Add :show_menu configuration option to disable editor menu choice
+* Add :prompt to configure an editor choice menu prompt
 
 ### Changed
 * Change Editor#exist? to use direct path env var search
