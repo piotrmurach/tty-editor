@@ -5,7 +5,7 @@
 # TTY::Editor [![Gitter](https://badges.gitter.im/Join%20Chat.svg)][gitter]
 
 [![Gem Version](https://badge.fury.io/rb/tty-editor.svg)][gem]
-[![Build Status](https://secure.travis-ci.org/piotrmurach/tty-editor.svg?branch=master)][travis]
+[![Actions CI](https://github.com/piotrmurach/tty-editor/workflows/CI/badge.svg?branch=master)][gh_actions_ci]
 [![Build status](https://ci.appveyor.com/api/projects/status/yw4guy16meq5wkee?svg=true)][appveyor]
 [![Maintainability](https://api.codeclimate.com/v1/badges/0afb9e75eef4ae4615c6/maintainability)][codeclimate]
 [![Coverage Status](https://coveralls.io/repos/github/piotrmurach/tty-editor/badge.svg)][coverage]
@@ -13,7 +13,7 @@
 
 [gitter]: https://gitter.im/piotrmurach/tty
 [gem]: http://badge.fury.io/rb/tty-editor
-[travis]: http://travis-ci.org/piotrmurach/tty-editor
+[gh_actions_ci]: https://github.com/piotrmurach/tty-editor/actions?query=workflow%3ACI
 [appveyor]: https://ci.appveyor.com/project/piotrmurach/tty-editor
 [codeclimate]:https://codeclimate.com/github/piotrmurach/tty-editor/maintainability
 [coverage]: https://coveralls.io/github/piotrmurach/tty-editor
