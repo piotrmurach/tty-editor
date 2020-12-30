@@ -122,16 +122,19 @@ module TTY
     #   whether or not raise on command failure, false by default
     # @param [Boolean] :show_menu
     #   whether or not show commands menu, true by default
+    # @param [Boolean] enable_color
+    #   disable or force prompt coloring, defaults to nil
     #
     # @api public
     def initialize(command: nil, raise_on_failure: false, show_menu: true,
-                   prompt: "Select an editor?", env: {},
+                   prompt: "Select an editor?", env: {}, enable_color: nil,
                    input: $stdin, output: $stdout, &block)
       @env = env
       @command = nil
       @input = input
       @output = output
       @raise_on_failure = raise_on_failure
+      @enable_color = enable_color
       @show_menu = show_menu
       @prompt = prompt
 
@@ -270,7 +273,8 @@ module TTY
     # @api private
     def choose_exec_from(execs)
       if @show_menu && execs.size > 1
-        prompt = TTY::Prompt.new(input: @input, output: @output, env: @env)
+        prompt = TTY::Prompt.new(input: @input, output: @output, env: @env,
+                                 enable_color: @enable_color)
         exec = prompt.enum_select(@prompt, execs)
         @output.print(prompt.cursor.up + prompt.cursor.clear_line)
         exec

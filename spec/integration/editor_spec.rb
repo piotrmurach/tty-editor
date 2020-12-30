@@ -108,7 +108,8 @@ RSpec.describe TTY::Editor, type: :sandbox do
       input.rewind
 
       editor = described_class.new(command: [cat, echo], input: input,
-                                   output: output, env: {"TTY_TEST" => "true"})
+                                   output: output, env: {"TTY_TEST" => "true"},
+                                   enable_color: true)
       status = editor.open(file)
     }.to output(/#{file}/).to_stdout_from_any_process
 
@@ -141,7 +142,8 @@ RSpec.describe TTY::Editor, type: :sandbox do
 
       editor = described_class.new(command: [cat, echo], input: input,
                                    prompt: "Which one do you fancy?",
-                                   output: output, env: {"TTY_TEST" => "true"})
+                                   output: output, env: {"TTY_TEST" => "true"},
+                                   enable_color: true)
       status = editor.open(file)
     }.to output(/one\ntwo\nthree\n/).to_stdout_from_any_process
 
