@@ -1,6 +1,15 @@
 AllCops:
   NewCops: enable
 
+Layout/FirstArrayElementIndentation:
+  Enabled: false
+
+Layout/LineLength:
+  Max: 82
+
+Layout/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: no_space
+
 Lint/AssignmentInCondition:
   Enabled: false
 
@@ -10,7 +19,7 @@ Metrics/AbcSize:
 Metrics/BlockLength:
   CountComments: true
   Max: 25
-  ExcludedMethods: []
+  IgnoredMethods: []
   Exclude:
     - "spec/**/*"
 
@@ -20,16 +29,23 @@ Metrics/ClassLength:
 Metrics/CyclomaticComplexity:
   Enabled: false
 
-Layout/LineLength:
-  Max: 80
-
 Metrics/MethodLength:
   Max: 20
 
 Naming/BinaryOperatorParameterName:
   Enabled: false
 
+Naming/FileName:
+  Exclude:
+    - "lib/tty-editor.rb"
+
 Style/AsciiComments:
+  Enabled: false
+
+Style/BlockDelimiters:
+  Enabled: false
+
+Style/CommentedKeyword:
   Enabled: false
 
 Style/LambdaCall:
@@ -38,12 +54,8 @@ Style/LambdaCall:
 Style/StringLiterals:
   EnforcedStyle: double_quotes
 
+Style/StringLiteralsInInterpolation:
+  EnforcedStyle: double_quotes
+
 Style/TrivialAccessors:
-  Enabled: false
-
-# { ... } for multi-line blocks is okay
-Style/BlockDelimiters:
-  Enabled: false
-
-Style/CommentedKeyword:
   Enabled: false
