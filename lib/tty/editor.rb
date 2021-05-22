@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "fileutils"
+require "pathname"
 require "shellwords"
 require "tempfile"
 require "tty-prompt"
@@ -39,14 +40,26 @@ module TTY
     # @example
     #   exist?("vim") # => true
     #
+    # @example
+    #   exist?("/usr/local/bin/vim") # => true
+    #
+    # @example
+    #   exist?("C:\\Program Files\\Vim\\vim.exe") # => true
+    #
     # @return [Boolean]
     #
     # @api private
     def self.exist?(command)
-      exts = ENV.fetch("PATHEXT", "").split(::File::PATH_SEPARATOR)
+      path = Pathname(command)
+      exts = [""].concat(ENV.fetch("PATHEXT", "").split(::File::PATH_SEPARATOR))
+
+      if path.absolute?
+        return exts.any? { |ext| ::File.exist?("#{command}#{ext}") }
+      end
+
       ENV.fetch("PATH", "").split(::File::PATH_SEPARATOR).any? do |dir|
         file = ::File.join(dir, command)
-        ::File.exist?(file) || exts.any? { |ext| ::File.exist?("#{file}#{ext}") }
+        exts.any? { |ext| ::File.exist?("#{file}#{ext}") }
       end
     end
 

@@ -1,5 +1,10 @@
 # Change log
 
+## [v0.7.0] - unreleased
+
+### Fixed
+* Fix Editor#exist? to correctly check command with an absolute path
+
 ## [v0.6.0] - 2020-09-22
 
 ### Added
@@ -84,6 +89,7 @@
 
 * Initial implementation and release
 
+[v0.7.0]: https://github.com/piotrmurach/tty-editor/compare/v0.6.0...v0.7.0
 [v0.6.0]: https://github.com/piotrmurach/tty-editor/compare/v0.5.1...v0.6.0
 [v0.5.1]: https://github.com/piotrmurach/tty-editor/compare/v0.5.0...v0.5.1
 [v0.5.0]: https://github.com/piotrmurach/tty-editor/compare/v0.4.1...v0.5.0
