@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "fileutils"
 require "pathname"
 require "shellwords"
 require "tempfile"

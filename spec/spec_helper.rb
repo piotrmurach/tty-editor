@@ -16,6 +16,7 @@ if ENV["COVERAGE"] == "true"
 end
 
 require "tty/editor"
+require "fileutils"
 require "stringio"
 require "tmpdir"
 
