@@ -74,24 +74,37 @@ module TTY
 
     # Find available text editors
     #
-    # @param [Array[String]] commands
+    # @param [Array<String>] commands
     #   the commands to use intstead of defaults
     #
-    # @return [Array[String]]
+    # @return [Array<String>]
     #   the existing editor commands
     #
     # @api public
     def self.available(*commands)
-      execs = if !commands.empty?
-                commands.map(&:to_s)
-              elsif from_env.any?
-                [from_env.first]
-              else
-                EXECUTABLES
-              end
+      if commands.any?
+        execs = search_executables(commands.map(&:to_s))
+        return execs unless execs.empty?
+      end
+
+      if from_env.any?
+        execs = search_executables(from_env)
+        return execs unless execs.empty?
+      end
+
+      search_executables(EXECUTABLES)
+    end
+
+    # Search for existing executables
+    #
+    # @return [Array<String>]
+    #
+    # @api private
+    def self.search_executables(execs)
       execs.compact.map(&:strip).reject(&:empty?).uniq
            .select { |exec| exist?(exec.split.first) }
     end
+    private_class_method :search_executables
 
     # Open file in system editor
     #

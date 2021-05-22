@@ -2,6 +2,9 @@
 
 ## [v0.7.0] - unreleased
 
+### Changed
+* Change to search default editors when command and env variables checks fail
+
 ### Fixed
 * Fix Editor#exist? to correctly check command with an absolute path
 

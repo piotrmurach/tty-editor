@@ -52,13 +52,31 @@ RSpec.describe TTY::Editor, ".available" do
 
   it "uses custom editor" do
     allow(described_class).to receive(:exist?).and_return(true)
+    allow(described_class).to receive(:exist?).with("custom-ed").and_return(true)
 
-    expect(described_class.available("custom")).to eql(["custom"])
+    expect(described_class.available("custom-ed")).to eql(["custom-ed"])
   end
 
   it "sets custom editor commands with symbols" do
     allow(described_class).to receive(:exist?).and_return(true)
 
     expect(described_class.available(:vim, :emacs)).to eql(%w[vim emacs])
+  end
+
+  it "checks EDITOR and VISUAL when a custom command doesn't exist" do
+    allow(ENV).to receive(:[]).with("VISUAL").and_return("env-editor")
+    allow(described_class).to receive(:exist?).with("custom-ed").and_return(false)
+    allow(described_class).to receive(:exist?).with("env-editor").and_return(true)
+
+    expect(described_class.available("custom-ed")).to eq(["env-editor"])
+  end
+
+  it "checks default editors when custom and ENV commands don't exist" do
+    allow(ENV).to receive(:[]).with("VISUAL").and_return("env-editor")
+    allow(described_class).to receive(:exist?).and_return(false)
+    allow(described_class).to receive(:exist?).with("vim").and_return(true)
+    allow(described_class).to receive(:exist?).with("emacs").and_return(true)
+
+    expect(described_class.available("comst-ed")).to eq(%w[vim emacs])
   end
 end
