@@ -95,16 +95,19 @@ RSpec.describe TTY::Editor, "#open" do
   end
 
   it "fails to open editor with unknown command" do
-    allow(described_class).to receive(:available).with(:unknown).and_return(["unknown"])
+    allow(described_class).to receive(:available).with(:unknown)
+                                                 .and_return(["unknown"])
     editor = described_class.new(command: :unknown)
     status = editor.open(fixtures_path("content.txt"))
     expect(status).to eq(false)
   end
 
   it "fails to open editor with unknown command and raises" do
-    allow(described_class).to receive(:available).with(:unknown).and_return(["unknown"])
+    allow(described_class).to receive(:available).with(:unknown)
+                                                 .and_return(["unknown"])
     expect {
-      described_class.open(fixtures_path("content.txt"), command: :unknown,
+      described_class.open(fixtures_path("content.txt"),
+                           command: :unknown,
                            raise_on_failure: true)
     }.to raise_error(TTY::Editor::CommandInvocationError)
   end

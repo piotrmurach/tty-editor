@@ -54,7 +54,7 @@ RSpec.describe TTY::Editor, "#command" do
   end
 
   it "finds more than one editor" do
-    allow(described_class).to receive(:available).and_return(["vim", "emacs"])
+    allow(described_class).to receive(:available).and_return(%w[vim emacs])
     prompt = spy(:prompt, enum_select: "vim", up: "", clear_line: "")
     allow(TTY::Prompt).to receive(:new).and_return(prompt)
 
@@ -64,7 +64,7 @@ RSpec.describe TTY::Editor, "#command" do
   end
 
   it "doesn't show menu choice when disabled" do
-    allow(described_class).to receive(:available).and_return(["vim", "emacs"])
+    allow(described_class).to receive(:available).and_return(%w[vim emacs])
     allow(TTY::Prompt).to receive(:new)
 
     editor = described_class.new(show_menu: false)

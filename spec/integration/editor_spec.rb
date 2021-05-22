@@ -37,7 +37,7 @@ RSpec.describe TTY::Editor, type: :sandbox do
 
     expect {
       status = described_class.open("newfile.txt", text: "Some text",
-                                    command: editor_command)
+                                                   command: editor_command)
     }.to output(/Some text/).to_stdout_from_any_process
 
     expect(status).to eq(true)
@@ -70,7 +70,8 @@ RSpec.describe TTY::Editor, type: :sandbox do
     editor_command = "ruby #{fixtures_path("echo.rb")}"
 
     expect {
-      described_class.open("newfile1.txt", "newfile2.txt", text: "Some text",
+      described_class.open("newfile1.txt", "newfile2.txt",
+                           text: "Some text",
                            command: editor_command)
     }.to output(/newfile1\.txt newfile2\.txt/).to_stdout_from_any_process
 
@@ -100,7 +101,7 @@ RSpec.describe TTY::Editor, type: :sandbox do
       "\e[2K\e[1G\e[1A" * 3,
       "\e[2K\e[1G\e[J",
       "Select an editor? \e[32m#{echo}\e[0m\n",
-      "\e[1A\e[2K\e[1G",
+      "\e[1A\e[2K\e[1G"
     ].join
 
     expect {
@@ -133,7 +134,7 @@ RSpec.describe TTY::Editor, type: :sandbox do
       "\e[2K\e[1G\e[1A" * 3,
       "\e[2K\e[1G\e[J",
       "Which one do you fancy? \e[32m#{cat}\e[0m\n",
-      "\e[1A\e[2K\e[1G",
+      "\e[1A\e[2K\e[1G"
     ].join
 
     expect {

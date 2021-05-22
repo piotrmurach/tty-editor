@@ -13,4 +13,3 @@ RSpec.describe TTY::Editor, "#new" do
     expect(editor.env).to eq({"FOO" => "bar"})
   end
 end
-

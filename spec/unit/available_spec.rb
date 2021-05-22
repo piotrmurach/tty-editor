@@ -41,7 +41,7 @@ RSpec.describe TTY::Editor, ".available" do
     allow(described_class).to receive(:exist?).with("vim").and_return(true)
     allow(described_class).to receive(:exist?).with("emacs").and_return(true)
 
-    expect(described_class.available).to eql(["vim", "emacs"])
+    expect(described_class.available).to eql(%w[vim emacs])
   end
 
   it "doesn't find any text editor" do
