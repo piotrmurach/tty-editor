@@ -48,6 +48,8 @@ Or install it yourself as:
     * [2.1.2 :env](#212-env)
     * [2.1.3 :raise_on_failure](#213-raise_on_failure)
     * [2.1.4 :prompt](#214-prompt)
+    * [2.1.5 :show_menu](#215-show_menu)
+    * [2.1.6 :enable_color](#216-enable_color)
   * [2.2 open](#22-open)
 
 ## 1. Usage
@@ -83,14 +85,14 @@ When `VISUAL` or `EDITOR` are not specified, a selection menu will be presented 
 For example, if an user has `vim`, `emacs` and `code` editors available on their system, they will see the following menu:
 
 ```
-# Select an editor?
-#   1) vim
-#   2) emacs
-#   3) code
-#   Choose 1-2 [1]:
+Select an editor?
+  1) vim
+  2) emacs
+  3) code
+  Choose 1-3 [1]:
 ```
 
-You can further customise this behaviour with [:prompt](#214-prompt).
+You can further customise this behaviour with [:prompt](#214-prompt), [:show_menu](#215-show_menu) and [:enable_color](#216-enable_color).
 
 ## 2. API
 
@@ -163,11 +165,11 @@ When more than one editor is available and user hasn't specified their preferred
 For example, when `vim`, `emacs` and `code` executable exists on the system, the following menu will be displayed:
 
 ```
-# Select an editor?
-#   1) vim
-#   2) emacs
-#   3) code
-#   Choose 1-2 [1]:
+Select an editor?
+  1) vim
+  2) emacs
+  3) code
+  Choose 1-3 [1]:
 ```
 
 If you would like to change the menu prompt use `:prompt` keyword:
@@ -180,11 +182,37 @@ editor.open("/path/to/file")
 This may produce the following in the terminal:
 
 ```
-# Which one do you fancy?
-#   1) vim
-#   2) emacs
-#   3) code
-#   Choose 1-2 [1]:
+Which one do you fancy?
+  1) vim
+  2) emacs
+  3) code
+  Choose 1-3 [1]:
+```
+
+#### 2.1.5 :show_menu
+
+When more than one editor is available from the default list, a selection menu will be displayed in the console:
+
+```
+Select an editor?
+  1) vim
+  2) emacs
+  3) code
+  Choose 1-3 [1]:
+```
+
+To hide the menu and automatically choose the first available editor use `:show_menu` keyword option:
+
+```ruby
+editor = TTY::Editor.new(show_menu: false)
+```
+
+#### 2.1.6 :enable_color
+
+An editor selection menu will display the first choice in colour on terminals that support colours. However, you can turn off colouring with the `:enable_color` keyword option:
+
+```ruby
+editor = TTY::Editor.new(enable_color: false)
 ```
 
 ### 2.2 open
