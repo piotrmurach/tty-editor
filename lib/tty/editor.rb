@@ -26,7 +26,7 @@ module TTY
 
     # List possible command line text editors
     #
-    # @return [Array[String]]
+    # @return [Array<String>]
     #
     # @api public
     EXECUTABLES = [
@@ -45,6 +45,9 @@ module TTY
     #
     # @example
     #   exist?("C:\\Program Files\\Vim\\vim.exe") # => true
+    #
+    # @param [String] command
+    #   the command to check for the existence
     #
     # @return [Boolean]
     #
@@ -65,7 +68,7 @@ module TTY
 
     # Check editor from environment variables
     #
-    # @return [Array[String]]
+    # @return [Array<String>]
     #
     # @api public
     def self.from_env
@@ -119,11 +122,11 @@ module TTY
     #
     # @param [Array<String>] files
     #   the files to open in an editor
-    # @param [String] :command
+    # @param [String] command
     #   the editor command to use, by default auto detects
-    # @param [String] :text
+    # @param [String] text
     #   the text to edit in an editor
-    # @param [Hash] :env
+    # @param [Hash] env
     #   environment variables to forward to the editor
     #
     # @return [Object]
@@ -136,17 +139,20 @@ module TTY
 
     # Initialize an Editor
     #
-    # @param [String] :command
+    # @example
+    #   TTY::Editor.new(command: "vim")
+    #
+    # @param [String] command
     #   the editor command to use, by default auto detects
-    # @param [Hash] :env
+    # @param [Hash] env
     #   environment variables to forward to the editor
-    # @param [IO] :input
+    # @param [IO] input
     #   the standard input
-    # @param [IO] :output
+    # @param [IO] output
     #   the standard output
-    # @param [Boolean] :raise_on_failure
+    # @param [Boolean] raise_on_failure
     #   whether or not raise on command failure, false by default
-    # @param [Boolean] :show_menu
+    # @param [Boolean] show_menu
     #   whether or not show commands menu, true by default
     # @param [Boolean] enable_color
     #   disable or force prompt coloring, defaults to nil
@@ -171,6 +177,12 @@ module TTY
 
     # Read or update environment vars
     #
+    # @example
+    #   editor.env({"FOO" => "bar"})
+    #
+    # @param [Hash{String => String}] value
+    #   the environment variables to use
+    #
     # @return [Hash]
     #
     # @api public
@@ -180,12 +192,15 @@ module TTY
       @env = value
     end
 
-    # Finds command using a configured command(s) or detected shell commands.
+    # Finds command using a configured command(s) or detected shell commands
     #
-    # @param [Array[String]] commands
+    # @example
+    #   editor.command("vim")
+    #
+    # @param [Array<String>] commands
     #   the optional command to use, by default auto detecting
     #
-    # @raise [TTY::CommandInvocationError]
+    # @raise [TTY::Editor::CommandInvocationError]
     #
     # @return [String]
     #
@@ -207,10 +222,10 @@ module TTY
     #
     # @param [Array<String>] files
     #   the files to open in an editor
-    # @param [String] :text
+    # @param [String] text
     #   the text to edit in an editor
     #
-    # @raise [TTY::CommandInvocationError]
+    # @raise [TTY::Editor::CommandInvocationError]
     #
     # @return [Boolean]
     #   whether editor command suceeded or not
@@ -262,6 +277,8 @@ module TTY
     # Check if filename and text arguments are valid
     #
     # @raise [InvalidArgumentError]
+    #
+    # @return [nil]
     #
     # @api private
     def validate_arguments(files, text)
