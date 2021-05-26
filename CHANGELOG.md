@@ -2,6 +2,9 @@
 
 ## [v0.7.0] - unreleased
 
+### Added
+* Add :enable_color option to allow control over editor menu colouring
+
 ### Changed
 * Change to search default editors when command and env variables checks fail
 
