@@ -106,4 +106,4 @@
 [v0.2.0]: https://github.com/piotrmurach/tty-editor/compare/v0.1.2...v0.2.0
 [v0.1.2]: https://github.com/piotrmurach/tty-editor/compare/v0.1.1...v0.1.2
 [v0.1.1]: https://github.com/piotrmurach/tty-editor/compare/v0.1.0...v0.1.1
-[v0.1.0]: https://github.com/piotrmurach/tty-editor/compare/v0.1.0
+[v0.1.0]: https://github.com/piotrmurach/tty-editor/compare/762a7ec...v0.1.0
