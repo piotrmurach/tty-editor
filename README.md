@@ -51,6 +51,7 @@ Or install it yourself as:
     * [2.1.5 :show_menu](#215-show_menu)
     * [2.1.6 :enable_color](#216-enable_color)
   * [2.2 open](#22-open)
+* [3. Default Editors](#3-default-editors)
 
 ## 1. Usage
 
@@ -268,6 +269,23 @@ You can also open multiple existing and non-existing files providing them as con
 ```ruby
 TTY::Editor.open("file_1", "file_2", "new_file_3")
 ```
+
+## 3. Default Editors
+
+When an editor in `EDITOR` and `VISUAL` environment variables can't be found or isn't specified, a choice menu is displayed. The menu includes available editors from the default list of text editors:
+
+* `Atom`
+* `Emacs`
+* `JED`
+* `Mg`
+* `Nano`
+* `Notepad`
+* `Pico`
+* `Sublime Text`
+* `TextMate`
+* `Vi`
+* `Vim`
+* `Visual Studio Code`
 
 ## Development
 
