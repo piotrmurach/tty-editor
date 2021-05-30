@@ -50,6 +50,7 @@ Or install it yourself as:
     * [2.1.4 :prompt](#214-prompt)
     * [2.1.5 :show_menu](#215-show_menu)
     * [2.1.6 :enable_color](#216-enable_color)
+    * [2.1.7 :menu_interrupt](#217-menu_interrupt)
   * [2.2 open](#22-open)
 * [3. Default Editors](#3-default-editors)
 
@@ -214,6 +215,22 @@ An editor selection menu will display the first choice in colour on terminals th
 
 ```ruby
 editor = TTY::Editor.new(enable_color: false)
+```
+
+### 2.1.7 :menu_interrupt
+
+When an editor selection menu gets interrupted by the `Ctrl+C` key, an `InputInterrupt` error is raised. To change this, provide the `:menu_interrupt` option with one of the following:
+
+* `:error` - raises `InputInterrupt` error
+* `:exit` - exits with `130` status code
+* `:noop` - skips handler
+* `:signal` - sends interrupt signal
+* `proc` - custom proc handler
+
+For example, to immediately exit the menu and program do:
+
+```ruby
+editor = TTY::Editor.new(menu_interrupt: :exit)
 ```
 
 ### 2.2 open

@@ -151,4 +151,22 @@ RSpec.describe TTY::Editor, type: :sandbox do
     expect(output.string).to eq(expected_output)
     expect(status).to eq(true)
   end
+
+  it "exits a choice menu when an interrupt signal gets sent" do
+    file = fixtures_path("content.txt")
+    cat = "ruby #{fixtures_path("cat.rb")}"
+    echo = "ruby #{fixtures_path("echo.rb")}"
+    input = StringIO.new
+    output = StringIO.new
+
+    expect {
+      input << "\C-c"
+      input.rewind
+
+      editor = described_class.new(command: [cat, echo], input: input,
+                                   output: output, env: {"TTY_TEST" => "true"},
+                                   enable_color: true, menu_interrupt: :exit)
+      editor.open(file)
+    }.to raise_error(SystemExit, "exit")
+  end
 end

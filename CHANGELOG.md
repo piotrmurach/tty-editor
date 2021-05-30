@@ -4,6 +4,7 @@
 
 ### Added
 * Add :enable_color option to allow control over editor menu colouring
+* Add :menu_interrupt to control how editor select menu handles interrupt signal
 
 ### Changed
 * Change to search default editors when command and env variables checks fail
