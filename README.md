@@ -84,13 +84,13 @@ TTY::Editor.open("/path/to/file", command: "vim -f")
 
 When `VISUAL` or `EDITOR` are not specified, a selection menu will be presented to the user.
 
-For example, if an user has `vim`, `emacs` and `code` editors available on their system, they will see the following menu:
+For example, if an user has `code`, `emacs` and `vim` editors available on their system, they will see the following menu:
 
 ```
 Select an editor?
-  1) vim
+  1) code
   2) emacs
-  3) code
+  3) vim
   Choose 1-3 [1]:
 ```
 
@@ -164,13 +164,13 @@ editor.open("/path/to/unknown/file")
 
 When more than one editor is available and user hasn't specified their preferred choice via `VISUAL` or `EDITOR` variables, a selection menu is presented.
 
-For example, when `vim`, `emacs` and `code` executable exists on the system, the following menu will be displayed:
+For example, when `code`, `emacs` and `vim` executable exists on the system, the following menu will be displayed:
 
 ```
 Select an editor?
-  1) vim
+  1) code
   2) emacs
-  3) code
+  3) vim
   Choose 1-3 [1]:
 ```
 
@@ -185,9 +185,9 @@ This may produce the following in the terminal:
 
 ```
 Which one do you fancy?
-  1) vim
+  1) code
   2) emacs
-  3) code
+  3) vim
   Choose 1-3 [1]:
 ```
 
@@ -197,9 +197,9 @@ When more than one editor is available from the default list, a selection menu w
 
 ```
 Select an editor?
-  1) vim
+  1) code
   2) emacs
-  3) code
+  3) vim
   Choose 1-3 [1]:
 ```
 

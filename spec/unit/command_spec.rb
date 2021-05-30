@@ -41,8 +41,8 @@ RSpec.describe TTY::Editor, "#command" do
     }.to raise_error(TTY::Editor::EditorNotFoundError,
                      "could not find a text editor to use. Please specify " \
                      "$VISUAL or $EDITOR or install one of the following " \
-                     "editors: nano, notepad, vim, vi, emacs, code, subl, " \
-                     "mate, atom, pico, qe, mg, jed.")
+                     "editors: atom, code, emacs, jed, mate, mg, nano, "\
+                     "notepad, pico, qe, subl, vi, vim.")
   end
 
   it "finds only one editor" do

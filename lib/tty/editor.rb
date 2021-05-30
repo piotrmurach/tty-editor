@@ -29,9 +29,9 @@ module TTY
     #
     # @api public
     EXECUTABLES = [
-      "nano -w", "notepad", "vim", "vi", "emacs",
-      "code", "subl -n -w", "mate -w", "atom",
-      "pico", "qe", "mg", "jed"
+      "atom", "code", "emacs", "jed", "mate -w",
+      "mg", "nano -w", "notepad", "pico", "qe",
+      "subl -n -w", "vi", "vim"
     ].freeze
 
     # Check if editor command exists

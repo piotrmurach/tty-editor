@@ -3,9 +3,13 @@
 RSpec.describe TTY::Editor do
   it "includes default editor execs" do
     expect(TTY::Editor::EXECUTABLES).to eq([
-      "nano -w", "notepad", "vim", "vi", "emacs",
-      "code", "subl -n -w", "mate -w", "atom",
-      "pico", "qe", "mg", "jed"
+      "atom", "code", "emacs", "jed", "mate -w",
+      "mg", "nano -w", "notepad", "pico", "qe",
+      "subl -n -w", "vi", "vim"
     ])
+  end
+
+  it "keeps editors list in alphabetical order" do
+    expect(TTY::Editor::EXECUTABLES.sort).to eq(TTY::Editor::EXECUTABLES)
   end
 end
