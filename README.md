@@ -48,7 +48,7 @@ Or install it yourself as:
     * [2.1.2 :env](#212-env)
     * [2.1.3 :raise_on_failure](#213-raise_on_failure)
     * [2.1.4 :prompt](#214-prompt)
-    * [2.1.5 :show_menu](#215-show_menu)
+    * [2.1.5 :hide_menu](#215-hide_menu)
     * [2.1.6 :enable_color](#216-enable_color)
     * [2.1.7 :menu_interrupt](#217-menu_interrupt)
   * [2.2 open](#22-open)
@@ -94,7 +94,7 @@ Select an editor?
   Choose 1-3 [1]:
 ```
 
-You can further customise this behaviour with [:prompt](#214-prompt), [:show_menu](#215-show_menu) and [:enable_color](#216-enable_color).
+You can further customise this behaviour with [:prompt](#214-prompt), [:hide_menu](#215-hide_menu) and [:enable_color](#216-enable_color).
 
 ## 2. API
 
@@ -191,7 +191,7 @@ Which one do you fancy?
   Choose 1-3 [1]:
 ```
 
-#### 2.1.5 :show_menu
+#### 2.1.5 :hide_menu
 
 When more than one editor is available from the default list, a selection menu will be displayed in the console:
 
@@ -203,10 +203,10 @@ Select an editor?
   Choose 1-3 [1]:
 ```
 
-To hide the menu and automatically choose the first available editor use `:show_menu` keyword option:
+To hide the menu and automatically choose the first available editor use the `:hide_menu` keyword option:
 
 ```ruby
-editor = TTY::Editor.new(show_menu: false)
+editor = TTY::Editor.new(hide_menu: true)
 ```
 
 #### 2.1.6 :enable_color

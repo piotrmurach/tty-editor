@@ -67,7 +67,7 @@ RSpec.describe TTY::Editor, "#command" do
     allow(described_class).to receive(:available).and_return(%w[vim emacs])
     allow(TTY::Prompt).to receive(:new)
 
-    editor = described_class.new(show_menu: false)
+    editor = described_class.new(hide_menu: true)
 
     expect(editor.command).to eq("vim")
     expect(TTY::Prompt).to_not have_received(:new)

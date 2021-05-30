@@ -151,15 +151,15 @@ module TTY
     #   the standard output
     # @param [Boolean] raise_on_failure
     #   whether or not raise on command failure, false by default
-    # @param [Boolean] show_menu
-    #   whether or not show commands menu, true by default
+    # @param [Boolean] hide_menu
+    #   whether or not to hide commands menu, false by default
     # @param [Boolean] enable_color
     #   disable or force prompt coloring, defaults to nil
     # @param [Symbol] menu_interrupt
     #   how to handle Ctrl+C key interrupt out of :error, :signal, :exit, :noop
     #
     # @api public
-    def initialize(command: nil, raise_on_failure: false, show_menu: true,
+    def initialize(command: nil, raise_on_failure: false, hide_menu: false,
                    prompt: "Select an editor?", env: {}, enable_color: nil,
                    input: $stdin, output: $stdout, menu_interrupt: :error,
                    &block)
@@ -169,7 +169,7 @@ module TTY
       @output = output
       @raise_on_failure = raise_on_failure
       @enable_color = enable_color
-      @show_menu = show_menu
+      @hide_menu = hide_menu
       @prompt = prompt
       @menu_interrupt = menu_interrupt
 
@@ -318,7 +318,7 @@ module TTY
     #
     # @api private
     def choose_exec_from(execs)
-      if @show_menu && execs.size > 1
+      if !@hide_menu && execs.size > 1
         prompt = TTY::Prompt.new(input: @input, output: @output, env: @env,
                                  enable_color: @enable_color,
                                  interrupt: @menu_interrupt)

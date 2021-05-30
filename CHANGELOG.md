@@ -8,6 +8,7 @@
 
 ### Changed
 * Change to search default editors when command and env variables checks fail
+* Change to rename :show_menu option as :hide_menu to indicate default behaviour
 
 ### Fixed
 * Fix Editor#exist? to correctly check command with an absolute path
