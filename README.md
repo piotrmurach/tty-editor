@@ -1,5 +1,5 @@
 <div align="center">
-  <a href="https://ttytoolkit.org" target="_blank"><img width="130" src="https://github.com/piotrmurach/tty/raw/master/images/tty.png" alt="TTY Toolkit logo" /></a>
+  <a href="https://ttytoolkit.org"><img width="130" src="https://github.com/piotrmurach/tty/raw/master/images/tty.png" alt="TTY Toolkit logo" /></a>
 </div>
 
 # TTY::Editor [![Gitter](https://badges.gitter.im/Join%20Chat.svg)][gitter]
@@ -9,15 +9,15 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/yw4guy16meq5wkee?svg=true)][appveyor]
 [![Maintainability](https://api.codeclimate.com/v1/badges/0afb9e75eef4ae4615c6/maintainability)][codeclimate]
 [![Coverage Status](https://coveralls.io/repos/github/piotrmurach/tty-editor/badge.svg)][coverage]
-[![Inline docs](http://inch-ci.org/github/piotrmurach/tty-editor.svg?branch=master)][inchpages]
+[![Inline docs](https://inch-ci.org/github/piotrmurach/tty-editor.svg?branch=master)][inchpages]
 
 [gitter]: https://gitter.im/piotrmurach/tty
-[gem]: http://badge.fury.io/rb/tty-editor
+[gem]: https://badge.fury.io/rb/tty-editor
 [gh_actions_ci]: https://github.com/piotrmurach/tty-editor/actions?query=workflow%3ACI
 [appveyor]: https://ci.appveyor.com/project/piotrmurach/tty-editor
 [codeclimate]:https://codeclimate.com/github/piotrmurach/tty-editor/maintainability
 [coverage]: https://coveralls.io/github/piotrmurach/tty-editor
-[inchpages]: http://inch-ci.org/github/piotrmurach/tty-editor
+[inchpages]: https://inch-ci.org/github/piotrmurach/tty-editor
 
 > Opens a file or text in the user's preferred editor.
 
