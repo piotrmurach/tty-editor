@@ -167,6 +167,6 @@ RSpec.describe TTY::Editor, type: :sandbox do
                                    output: output, env: {"TTY_TEST" => "true"},
                                    enable_color: true, menu_interrupt: :exit)
       editor.open(file)
-    }.to raise_error(SystemExit, "exit")
+    }.to raise_error(SystemExit)
   end
 end
