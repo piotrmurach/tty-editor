@@ -19,7 +19,7 @@
 [coverage]: https://coveralls.io/github/piotrmurach/tty-editor
 [inchpages]: https://inch-ci.org/github/piotrmurach/tty-editor
 
-> Opens a file or text in the user's preferred editor.
+> Open a file or text in a preferred terminal text editor.
 
 **TTY::Editor** provides independent component for [TTY](https://github.com/piotrmurach/tty) toolkit.
 
@@ -94,7 +94,7 @@ Select an editor?
   Choose 1-3 [1]:
 ```
 
-You can further customise this behaviour with [:prompt](#214-prompt), [:hide_menu](#215-hide_menu) and [:enable_color](#216-enable_color).
+You can further customise this behaviour with [:prompt](#214-prompt), [:hide_menu](#215-hide_menu), [:enable_color](#216-enable_color) and [:menu_interrupt](#217-menu_interrupt).
 
 ## 2. API
 
@@ -215,6 +215,12 @@ An editor selection menu will display the first choice in colour on terminals th
 
 ```ruby
 editor = TTY::Editor.new(enable_color: false)
+```
+
+Equally, you can enforce the current menu choice to be always coloured:
+
+```ruby
+editor = TTY::Editor.new(enable_color: true)
 ```
 
 ### 2.1.7 :menu_interrupt
