@@ -27,5 +27,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "tty-prompt", "~> 0.22"
 
   spec.add_development_dependency "rake"
-  spec.add_development_dependency "rspec", "~> 3.0"
+  spec.add_development_dependency "rspec", ">= 3.0"
 end
