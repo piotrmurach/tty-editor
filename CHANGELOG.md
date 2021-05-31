@@ -1,6 +1,6 @@
 # Change log
 
-## [v0.7.0] - 2021-05-30
+## [v0.7.0] - 2021-05-31
 
 ### Added
 * Add :enable_color option to allow control over editor menu colouring
