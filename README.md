@@ -293,7 +293,9 @@ When an editor in `EDITOR` and `VISUAL` environment variables can't be found or 
 
 * `Atom`
 * `Emacs`
+* `gedit`
 * `JED`
+* `Kate`
 * `Mg`
 * `Nano`
 * `Notepad`
