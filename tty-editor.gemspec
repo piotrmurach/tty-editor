@@ -7,8 +7,8 @@ Gem::Specification.new do |spec|
   spec.version       = TTY::Editor::VERSION
   spec.authors       = ["Piotr Murach"]
   spec.email         = ["piotr@piotrmurach.com"]
-  spec.summary       = %q{Open a file or text in a terminal text editor.}
-  spec.description   = %q{Open a file or text in a terminal text editor.}
+  spec.summary       = %q{Open a file or text in a preferred terminal text editor.}
+  spec.description   = %q{Open a file or text in a preferred terminal text editor.}
   spec.homepage      = "https://ttytoolkit.org"
   spec.license       = "MIT"
 
