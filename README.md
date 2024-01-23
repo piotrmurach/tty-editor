@@ -2,22 +2,19 @@
   <a href="https://ttytoolkit.org"><img width="130" src="https://github.com/piotrmurach/tty/raw/master/images/tty.png" alt="TTY Toolkit logo" /></a>
 </div>
 
-# TTY::Editor [![Gitter](https://badges.gitter.im/Join%20Chat.svg)][gitter]
+# TTY::Editor
 
 [![Gem Version](https://badge.fury.io/rb/tty-editor.svg)][gem]
 [![Actions CI](https://github.com/piotrmurach/tty-editor/workflows/CI/badge.svg?branch=master)][gh_actions_ci]
 [![Build status](https://ci.appveyor.com/api/projects/status/yw4guy16meq5wkee?svg=true)][appveyor]
 [![Maintainability](https://api.codeclimate.com/v1/badges/0afb9e75eef4ae4615c6/maintainability)][codeclimate]
 [![Coverage Status](https://coveralls.io/repos/github/piotrmurach/tty-editor/badge.svg)][coverage]
-[![Inline docs](https://inch-ci.org/github/piotrmurach/tty-editor.svg?branch=master)][inchpages]
 
-[gitter]: https://gitter.im/piotrmurach/tty
 [gem]: https://badge.fury.io/rb/tty-editor
 [gh_actions_ci]: https://github.com/piotrmurach/tty-editor/actions?query=workflow%3ACI
 [appveyor]: https://ci.appveyor.com/project/piotrmurach/tty-editor
 [codeclimate]:https://codeclimate.com/github/piotrmurach/tty-editor/maintainability
 [coverage]: https://coveralls.io/github/piotrmurach/tty-editor
-[inchpages]: https://inch-ci.org/github/piotrmurach/tty-editor
 
 > Open a file or text in a preferred terminal text editor.
 
